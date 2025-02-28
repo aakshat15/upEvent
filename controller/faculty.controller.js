@@ -10,12 +10,12 @@ import nodemailer from "nodemailer"
 import dotenv from "dotenv";
 
 dotenv.config();
-    const transport = nodemailer.createTransport({
-        service: "gmail",
-        auth: {
+const transport = nodemailer.createTransport({
+                service: "gmail",
+            auth: {
             user: process.env.EMAIL_USER,
             pass: process.env.EMAIL_PASS,
-        },
+            },
     });
 
 
@@ -66,14 +66,11 @@ export const createFaculty = async (req, res, next) => {
 
                 // from null UPdate faculty in Detalis table
                 faculty = await registers.update(
-                    { name, password: hashedPassword, isVerified: "false", role },
+                    { name, password: hashedPassword, isVerified: "false", role , email },
                     { where: { rollNumber: facultyNumber } }
                 );
 
-                return res.status(200).json({
-                    result: ` Verification email sent to ${email}. 
-                    Please verify your account.`,
-                });
+                return res.status(200).json({RESULT :"SIGNUP SUCCESS" , STEP: "SEE YOUR EMAIL TO VERIFY"});
             }
         } catch (err) {
             return res.status(500).json({ message: `Faculty not registered due to: ${err.message}` });
@@ -118,7 +115,7 @@ export const facultySignInn = async (req, res, next) => {
                 });
 
 
-                return res.status(200).json({ Result: 'Sign Inn success', Use_with_getreqest: `/faculty/faculty-dashBoard/` });
+                return res.status(200).json({ Result: 'Sign Inn success' });
             }
             else { return res.status(400).json({ message: `password is Wroung` }) }
 

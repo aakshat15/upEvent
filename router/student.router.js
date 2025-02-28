@@ -26,6 +26,8 @@ studentRouter.get("/student-dashBoard" , verifyToken , dashboard);
 
 //  EVENT
 studentRouter.get("/event/:eventId" , verifyToken , Oneevent)
+
+
 studentRouter.post("/event/register/:eventId" ,
     body("studentEmail" , "Fill the email").notEmpty(),
     body("studentEmail", "valid Email Enter").isEmail(), 

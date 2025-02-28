@@ -109,8 +109,8 @@ export const signInn = async (req, res, next) => {
                     })
 
 
-                    // return res.status(200).json({  Result:'Sign Inn success' ,})
-                    return res.status(200).json({ Route_get: "/student/student-dashBoard` " })
+                    return res.status(200).json({  Result:'Sign Inn success' ,})
+                    // return res.status(200).json({ Route_get: "/student/student-dashBoard` " })
                 }
                 else { return res.status(400).json({ message: `password is Wroung` }) }
             }
@@ -133,7 +133,7 @@ export const dashboard = async (req, res, next) => {
         // res.cookie("eventId", events.id)
 
 
-        res.status(200).json({ RESULT: "Success Deshboard Render", Onclick_On_ANYTASK_GET_REQ: `/user/event=`, EVENT: events })
+        res.status(200).json({ RESULT: "Success Deshboard Render", EVENT: events })
 
     } catch (error) {
         res.status(500).json({ Erro: `Server Error Due to${error}` })
