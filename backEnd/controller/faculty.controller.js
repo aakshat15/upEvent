@@ -104,9 +104,11 @@ export const facultySignInn = async (req, res, next) => {
                     process.env.JWT_KEY,
                 );
                 // SEND TOKEN AS A COOKIE
-                res.cookie("token", token, {
-                    httpOnly: true, // Protects from XSS attacks
-                });
+                res.cookie('token', 'your_secret_token', {
+                    httpOnly: true, // Prevent client-side access
+                    secure: false,  // Set to true in production with HTTPS
+                    sameSite: 'lax', // Adjust as per requirements
+                  });
 
 
                 return res.status(200).json({ Result: 'Sign Inn success' });

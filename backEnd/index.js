@@ -19,7 +19,10 @@ const app = express();
 
 
 //CORS USED FOR THE AXIOS 
-app.use(cors())
+app.use(cors({
+    origin: 'http://localhost:3001', // Replace with your frontend URL
+    credentials: true, // Allow credentials (cookies)
+  }))
 
 app.use(bodyParser.urlencoded({ extended : true}));
 app.use(bodyParser.json());

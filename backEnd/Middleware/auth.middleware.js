@@ -4,7 +4,7 @@ export const verifyToken = (req, res, next) => {
     const token = req.cookies.token; // Read JWT from cookies
 
     if (!token) {
-        return res.status(403).json({ message: "Access Denied: No Token Provided" });
+        return res.status(401).json({ message: "Access Denied: No Token Provided" });
     }
 
     try {
