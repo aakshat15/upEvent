@@ -9,6 +9,7 @@ import nodemailer from "nodemailer"
 import dotenv from "dotenv";
 import student from "../models/student.model.js";
 import faculty from "../models/faculty.model.js";
+import localStorage from "localStorage"
 
 dotenv.config();
 const transport = nodemailer.createTransport({
@@ -35,7 +36,7 @@ export const createFaculty = async (req, res, next) => {
             let Faculty = await faculty.findOne({ where: { facultyNumber, email } });
 
             //for the only one time login
-           if(Faculty.password == null && Faculty.name==null){
+            if (Faculty.password == null && Faculty.name == null) {
 
                 //CReating bcrept password
                 let saltKey = bcrypt.genSaltSync(10);
@@ -76,20 +77,15 @@ export const createFaculty = async (req, res, next) => {
 
 }
 
-export const facultySignInn = async (req, res, next) => {
-
+export const facultySignInn = async (req, res) => {
     let error = validationResult(req);
 
     if (error.isEmpty()) {
-
         try {
             const { email, password } = req.body;
-
             let user = await faculty.findOne({ where: { email } });
 
-            // console.log(user.isVerified);
-
-            if (!user) return res.status(400).json({ message: "Not Registered Creadencial" })
+            if (!user) return res.status(400).json({ message: "Not Registered Credential" });
 
             if (user.isVerified == "false") {
                 return res.status(403).json({ message: "Please verify your email first" });
@@ -98,37 +94,33 @@ export const facultySignInn = async (req, res, next) => {
             const isMatch = await bcrypt.compare(password, user.password);
 
             if (isMatch) {
-                ///faculty/createEvent/${user.id}
+                // Generate JWT Token
                 const token = jwt.sign(
-                    { id: user.id, }, // MEXIEDWITH:ID
-                    process.env.JWT_KEY,
+                    { id: user.id }, // Payload
+                    process.env.JWT_KEY, 
+                    { expiresIn: "1h" } // Token expiration
                 );
-                // SEND TOKEN AS A COOKIE
-                res.cookie('token', 'your_secret_token', {
-                    httpOnly: true, // Prevent client-side access
-                    secure: false,  // Set to true in production with HTTPS
-                    sameSite: 'lax', // Adjust as per requirements
-                  });
 
+                localStorage.setItem("token", token); // Save token
 
-                return res.status(200).json({ Result: 'Sign Inn success' });
+                return res.status(200).json({ Result: "Sign In success", token });
+            } else {
+                return res.status(400).json({ message: "Wrong password" });
             }
-            else { return res.status(400).json({ message: `password is Wroung` }) }
 
         } catch (error) {
-            res.status(500).json({ message: `Server Error Due to ${error}` })
+            res.status(500).json({ message: `Server Error: ${error.message}` });
         }
-    }
-    else {
+    } else {
         res.status(400).json({ request: "Bad Request", error: error.array() });
     }
-}
+};
 
 export const dashBoard = async (req, res, next) => {
-    const token = req.cookies.token;
+    const token = localStorage.getItem("token")
     // extract the id from token
     const createdByfaculty = jwt.verify(token, process.env.JWT_KEY).id;
-    console.log(createdByfaculty);
+    // console.log(createdByfaculty);
 
     // res.status(200).json({ RESULT: `SUCCESS AND DEASHBOARD RENDER` })
     res.status(200).json({ POST_EVENT_REQUEST: `/faculty/createEvent`, GET_MYEVENT_REQUEST: `/faculty/myEvents`, GET_ALL_REQUEST: "/faculty/AllEvents" })
@@ -141,9 +133,9 @@ export const createStudent = async (req, res, next) => {
     if (error.isEmpty()) {
 
         try {
-            const facultyNumber = `ROLL-${uuidv4().slice(0, 8)}`
+            const rollNumber = `ROLL-${uuidv4().slice(0, 8)}`
             const { email } = await req.body;
-            //    console.log(facultyNumber);
+ 
             const userEmail = await student.findOne({ where: { email } });
             if (userEmail) {
                 res.status(400).json({ message: `Email is Already Registerd ${userEmail.email}` })
@@ -151,10 +143,10 @@ export const createStudent = async (req, res, next) => {
             else {
 
                 const faculty = await student.create({
-                    facultyNumber, // Assign random roll number
+                    rollNumber, // Assign random roll number
                     email,
-                });
-                res.status(200).json({ message: `Register Success ${facultyNumber}` })
+                });                         
+                res.status(200).json({ message: `Register Success ${rollNumber}`,rollNumber })
             }
         } catch (error) {
             res.status(500).json({ message: `Error due to ${error}` })
@@ -176,7 +168,7 @@ export const createEvent = async (req, res, next) => {
             const { title, description, location, endDate } = req.body;
 
             // Extract token from cookies
-            const token = req.cookies.token;
+            const token = localStorage.getItem("token")
             if (!token) {
                 return res.status(401).json({ message: "Unauthorized: No token provided." });
             }
@@ -185,7 +177,7 @@ export const createEvent = async (req, res, next) => {
             const decoded = jwt.verify(token, process.env.JWT_KEY);
             const createdByfaculty = decoded.id; // Extracting faculty ID from token
 
-            console.log("Faculty ID:", createdByfaculty);
+            // console.log("Faculty ID:", createdByfaculty);
 
             // Check if the event already exists
             let existingEvent = await event.findOne({ where: { title, endDate } });

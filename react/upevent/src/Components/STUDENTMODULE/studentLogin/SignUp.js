@@ -1,6 +1,6 @@
 import "./SignUp.css"
-import logo from "../../assets/logo.png";
-import { Link, useNavigate } from "react-router-dom";
+import logo from "../../../assets/logo.png";
+import { Link } from "react-router-dom";
 function SignUp() {
     return <>
         <div className="container">

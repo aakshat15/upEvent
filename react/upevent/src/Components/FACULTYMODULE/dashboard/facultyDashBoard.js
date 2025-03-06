@@ -19,7 +19,7 @@ function FacultyDashBoard() {
         const fetchEvents = async () => {
             try {
                 const response = await axios.get("http://localhost:3000/faculty/allEvents");
-                console.log("API Response:", response.data); // Debugging API response
+                // console.log("API Response:", response.data); // Debugging API response
 
                 if (Array.isArray(response.data.AllEvents)) {
                     dispatch({ type: "setData", payload: response.data.AllEvents });
@@ -37,7 +37,9 @@ function FacultyDashBoard() {
     return (
         <>
             <h1>Dashboard</h1>
-            <Link to={"/faculty-createEvent"}>CREATE STUDENTs</Link>
+            <Link to={"/faculty-createEvent"}>CREATE Events</Link>
+            <Link to={"/faculty-createStudent"}>CREATE STUDENT</Link>
+
             <table className="table table-bordered table-striped">
                 <thead className="thead-dark">
                     <tr>
