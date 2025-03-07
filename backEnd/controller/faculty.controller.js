@@ -137,7 +137,8 @@ export const createStudent = async (req, res, next) => {
             const { email } = await req.body;
  
             const userEmail = await student.findOne({ where: { email } });
-            if (userEmail) {
+            const userEmailInFaculty = await faculty.findOne({ where: { email } });
+            if (userEmail || userEmailInFaculty) {
                 res.status(400).json({ message: `Email is Already Registerd ${userEmail.email}` })
             }
             else {
@@ -207,7 +208,7 @@ export const createEvent = async (req, res, next) => {
 export const myEvents = async (req, res, next) => {
 
     try {
-        const token = req.cookies.token;
+    const token = localStorage.getItem("token");
         if (!token) {
             return res.status(401).json({ message: "Unauthorized: No token provided." });
         }

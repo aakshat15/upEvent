@@ -8,21 +8,29 @@ import FacultyDashBoard from "./Components/FACULTYMODULE/dashboard/facultyDashBo
 import CreateEvent from "./Components/FACULTYMODULE/dashboard/CreateEvent";
 import ProtectedRoute from "./Components/auth/ProtectedRoute";
 import CreateStudent from "./Components/FACULTYMODULE/dashboard/CreateStudent";
+import GetDetalis from "./Components/FACULTYMODULE/dashboard/GetDetalis.js";
+import StudentDashBoard from "./Components/STUDENTMODULE/DASHBOARD/StudentDashBoard.js";
+import EventForm from "./Components/STUDENTMODULE/DASHBOARD/EventForm.js";
 function App() {
   return <>
     <Routes>
       <Route path="/" element={<Main />} />
       <Route path="/faculty-signUp" element={<FaSignUp />} />
       <Route path="/faculty-signIn" element={<FaSignIn />} />
+
+      <Route path="/student-signUp" element={<SignUp />} />
+      <Route path="/student-signIn" element={<SignIn />} />
       <Route element={<ProtectedRoute />}>
         <Route path="/faculty-DashBoard" element={<FacultyDashBoard />} />
         <Route path="/faculty-createEvent" element={<CreateEvent />} />
         <Route path="/faculty-createStudent" element={<CreateStudent/>}/>
+        <Route path="/faculty-getDetalis/:id" element={<GetDetalis/>}/>
+
+
+       <Route path="/student-DashBoard" element={<StudentDashBoard/>} />
+       <Route path="/student-EventForm/:id" element={<EventForm/>}/>
       </Route>
 
-
-      <Route path="/student-signUp" element={<SignUp />} />
-      <Route path="/student-signIn" element={<SignIn />} />
     </Routes>
   </>
 }

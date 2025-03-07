@@ -6,7 +6,7 @@ import EventRegistration from "../models/eventRegistration.js";
 import bcrypt from "bcrypt"
 import nodemailer from "nodemailer"
 import { validationResult } from "express-validator";
-
+import localStorage from "localStorage"
 
 const transport = nodemailer.createTransport({
     service: "gmail",
@@ -18,12 +18,10 @@ const transport = nodemailer.createTransport({
 
 
 export const signUp = async (req, res, next) => {
+    
     // Check validation errors
     const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(400).json({ msg: "Bad request", error: errors.array() });
-    }
-
+    if (errors.isEmpty()) {
     try {
         const { rollNumber, name, email, password } = req.body;
         
@@ -65,16 +63,19 @@ export const signUp = async (req, res, next) => {
                 { where: { rollNumber } }
             );
 
-            return res.status(200).json({ result: `STUDENT CREATED: ${email}` , pending:"check you email and verify it" });
+            return res.status(200).json({ result: `STUDENT CREATED: ${email}` , message:"check you email and verify it" });
         } else {
-            // If user is already registered and has necessary information (password & name)
-            return res.status(400).json({ message: "Already Registered" });
-        }
-
+                // If user is already registered and has necessary information (password & name)
+                return res.status(401).json({ message: "Already Registered" });
+            }
     } catch (error) {
         // Catch and handle server errors
         console.error('Error during sign-up:', error);
         return res.status(500).json({ message: `Server Error: ${error.message}` });
+    }
+    }
+    else {
+        res.status(400).json({ msg: "bad request for fild restraction", errors })
     }
 };
 export const signInn = async (req, res, next) => {
@@ -83,44 +84,47 @@ export const signInn = async (req, res, next) => {
 
     if (error.isEmpty()) {
         try {
+            console.log(req.body);
+            
             const { email, password } = req.body;
-
-
-            let user = await student.findOne({ where: { email } });
-            if (!user) return res.status(400).json({ message: "Not Registered Creadencial" })
-
-            if (user.isVerified == "false") {
-                return res.status(403).json({ message: "Please verify your email first" });
-            }
-
-            else {
-
-                const ismatch = await bcrypt.compare(password, user.password);
-                // console.log(ismatch);
-
+            
+            
+            let user = await student.findOne({ where: { email } })
+            if (!user || user.password==null){
+                return res.status(400).json({ message: "Register First" })
+            } 
+            else{
+                
+                if (user.isVerified == "false") {
+                    return res.status(403).json({ message: "Please verify your email first" });
+                }
+                
+                else {
+                    const ismatch = await bcrypt.compare(password, user.password);
+                    // console.log(ismatch);
+                
                 if (ismatch) {
                     const token = jwt.sign(
                         { id: user.rollNumber },
                         process.env.JWT_KEY,
                     );
-                    // SENDING TOKEN IN FORM OF COOKIES
-                    res.cookie("token", token, {
-                        httpOnly: true,//xss Atacks
-                    })
-
-
-                    return res.status(200).json({  Result:'Sign Inn success' ,})
+                    // SENDING TOKEN IN FORM OF localStorage
+                    localStorage.setItem("token", token)
+                    
+                    
+                    return res.status(200).json({  Result:'Sign Inn success' , token})
                     // return res.status(200).json({ Route_get: "/student/student-dashBoard` " })
                 }
                 else { return res.status(400).json({ message: `password is Wroung` }) }
             }
+        }
 
         } catch (error) {
             res.status(500).json({ message: `Server Error Due to ${error}` })
         }
     }
     else {
-        res.status(400).json({ msg: "bad request", error })
+        res.status(400).json({ msg: "bad request for filed restraction", error })
     }
 }
 

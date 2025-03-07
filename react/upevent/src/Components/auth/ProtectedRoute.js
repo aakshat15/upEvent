@@ -5,9 +5,9 @@ function ProtectedRoute(){
 
     const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
-    console.log(isAuthenticated);
+    // console.log(isAuthenticated);
     if(!isAuthenticated){
-        return <Navigate to="/faculty-signIn" />;
+        return <Navigate to="/" />;
     }
     else{
         return <Outlet />;
