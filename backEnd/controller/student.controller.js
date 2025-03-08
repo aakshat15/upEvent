@@ -26,7 +26,7 @@ export const signUp = async (req, res, next) => {
         const { rollNumber, name, email, password } = req.body;
         
         // Check if user with the given rollNumber exists
-        let user = await student.findOne({ where: { rollNumber } });
+        let user = await student.findOne({ where: { rollNumber , email } });
 
         if (!user) {
             // If no user is found with the provided roll number, return an error
@@ -75,7 +75,7 @@ export const signUp = async (req, res, next) => {
     }
     }
     else {
-        res.status(400).json({ msg: "bad request for fild restraction", errors })
+        res.status(400).json({message: "PASSWORD MUST BE 2 - 10 Length",})
     }
 };
 export const signInn = async (req, res, next) => {

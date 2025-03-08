@@ -97,7 +97,7 @@ export const facultySignInn = async (req, res) => {
                 // Generate JWT Token
                 const token = jwt.sign(
                     { id: user.id }, // Payload
-                    process.env.JWT_KEY, 
+                    process.env.JWT_KEY,
                     { expiresIn: "1h" } // Token expiration
                 );
 
@@ -133,30 +133,40 @@ export const createStudent = async (req, res, next) => {
     if (error.isEmpty()) {
 
         try {
-            const rollNumber = `ROLL-${uuidv4().slice(0, 8)}`
-            const { email } = await req.body;
- 
+            const rollNumber = `ROLL-${uuidv4().slice(0, 8)}`;
+            const { email } = req.body;
+
+            // Check if email exists in either student or faculty
             const userEmail = await student.findOne({ where: { email } });
             const userEmailInFaculty = await faculty.findOne({ where: { email } });
+
             if (userEmail || userEmailInFaculty) {
-                res.status(400).json({ message: `Email is Already Registerd ${userEmail.email}` })
+                return res.status(401).json({
+                    message: `EMAIL IS ALREADY REGISTERD`
+                });
             }
-            else {
 
-                const faculty = await student.create({
-                    rollNumber, // Assign random roll number
-                    email,
-                });                         
-                res.status(200).json({ message: `Register Success ${rollNumber}`,rollNumber })
-            }
+            // If no email found, create a new student
+            await student.create({
+                rollNumber,
+                email,
+            });
+
+            return res.status(200).json({
+                message: `STUDENT REGISTERD`
+            });
+
         } catch (error) {
-            res.status(500).json({ message: `Error due to ${error}` })
+            return res.status(200).json({
+                message: `INTERNAL SERVER ERROR`
+            });
         }
-    }
-    else {
-        res.status(400).json({ Msg: "Bad Request", error: error.array() })
-    }
 
+    } else {
+        res.status(400).json({
+            message: error,
+        });
+    }
 }
 
 export const createEvent = async (req, res, next) => {
@@ -208,7 +218,7 @@ export const createEvent = async (req, res, next) => {
 export const myEvents = async (req, res, next) => {
 
     try {
-    const token = localStorage.getItem("token");
+        const token = localStorage.getItem("token");
         if (!token) {
             return res.status(401).json({ message: "Unauthorized: No token provided." });
         }

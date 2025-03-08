@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useReducer } from "react";
+import { toast } from "react-toastify";
 
 function CreateStudent() {
 
@@ -27,10 +28,11 @@ function CreateStudent() {
         .then((response)=>{
             const rollNumber = response.data.rollNumber;
             dispatch({type : "setRollNumber" , payload : rollNumber})
+            toast.success(response.data.message);
         })
         .catch((error) => {
             console.log(error.response.data.message);
-            alert(error.response.data.message)
+            toast.error(error.response.data.message)
             dispatch({type : "setRollNumber" , payload : " "})
         })
     }

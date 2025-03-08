@@ -37,6 +37,7 @@ function SignUp() {
             }, 2000); // Wait 2 seconds before redirecting
 
         } catch (error) {
+            console.log(error);
             toast.error(error.response.data.message || "Sign-up failed!");
         } finally {
             setLoading(false); // Stop loading

@@ -1,7 +1,7 @@
 import "./SignIn.css"
 import logo from "../../../assets/logo.png";
 import { Link, useNavigate } from "react-router-dom";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
@@ -14,8 +14,10 @@ function SignIn() {
 
     const emailRef = useRef();
     const passwordRef = useRef();
+    const[loading , setLoading] = useState(false);
 
     const signIn = async (e) => {
+        setLoading(true)
         e.preventDefault();
         const formData = {
             email: emailRef.current.value,
@@ -35,7 +37,11 @@ function SignIn() {
                 }, 2000);
             })
             .catch((error) => {
+                console.log(error.response);
+                
                 toast.error(error.response.data.message || error.response.data.error.errors[0].msg)
+            }).finally(()=>{
+                setLoading(false);
             })
     }
     return <>
@@ -54,7 +60,9 @@ function SignIn() {
                             <input type="password" className="form-control" ref={passwordRef} placeholder="Enter your password" required />
                             <span id="forget">forget password</span>
                         </div>
-                        <button type="submit" className="btn btn-primary btn-block">Sign In</button>
+                        <button type="submit" className="btn btn-primary btn-block">
+                            {loading ? "Signing Up..." : "Sign Up"}
+                    </button>
                         <Link className="btn btn-block text-dark" to={'/student-signUp'}>CREATE ACCOUNT<span className="text-primary"> SignIn</span></Link>
                     </form>
                 </div>

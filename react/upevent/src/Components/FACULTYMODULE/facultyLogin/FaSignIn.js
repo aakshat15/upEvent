@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { loginSuccess } from "../../auth/authSlice";
 import logo from "../../../assets/logo.png"
+import { toast } from "react-toastify";
 
 function FaSignIn() {
     //FOR NAVIGATE
@@ -16,10 +17,11 @@ function FaSignIn() {
     const passwordRef = useRef();
 
     //FOR THE ERROR
-    const [errorMessage, setErrorMessage] = useState("");
+    const [loading, setLoading] = useState(false);
 
     const FaSignIn = async (e) => {
         e.preventDefault();
+        setLoading(true)
         // console.log(emailRef.current.value);
         // console.log(passwordRef.current.value);
 
@@ -30,8 +32,7 @@ function FaSignIn() {
         try {
             //IT WAS RETURNING PROMISE YOU CAN ALSO USE THEN CATCH
             const response = await axios.post("http://localhost:3000/faculty/faculty-signInn"
-                , formData
-                , { withCredentials: true }) //IT IS USE FOR COOKIES SE BACKEND TO FRONT END
+                , formData )
 
             const token = response.data.token; // Extract token from response
             if (token) {
@@ -42,18 +43,26 @@ function FaSignIn() {
             // Dispatch Redux action to store token & user
             dispatch(loginSuccess({ token, user: formData.email }));
 
-            setErrorMessage("success")
-            return navigate("/faculty-DashBoard");
+            setTimeout(() => {
+                toast.success("SIGN IN SUCCESS")
+                return navigate("/faculty-DashBoard");
+            }, 2000);
+            
         } catch (error) {
             if (error.response) {
                 if (error.response.status === 400) {
-                    setErrorMessage(error.response.data.message)
+                    toast.error(error.response.data.message)
                 } else if (error.response.status === 403) {
-                    setErrorMessage("PLEASE CHECK EMAIL AND VERIFIED FIRST");
+                    console.log(error.response);
+                    
+                    toast.error("PLEASE CHECK EMAI AND VERIFIED FIRST")
                 }
             } else {
-                setErrorMessage("NetWork error . please check your connection")
+                toast.error("NetWork error . please check your connection")
             }
+        }
+        finally {
+            setLoading(false)
         }
     }
     return <>
@@ -86,7 +95,9 @@ function FaSignIn() {
                             <input type="password" className="form-control" ref={passwordRef} placeholder="Enter your password" required />
                             <span id="forget">forget password</span>
                         </div>
-                        <button type="submit" className="btn btn-primary btn-block">Sign In</button>
+                        <button type="submit" className="btn btn-primary btn-block">
+                            {loading ? "Sign In..." : "SignIn Now"}
+                        </button>
                         <Link className="btn btn-block text-dark" to={'/faculty-signUp'}>CREATE ACCOUNT<span className="text-primary"> SignIn</span></Link>
                     </form>
                 </div>
