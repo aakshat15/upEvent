@@ -1,8 +1,9 @@
 import axios from "axios";
 import { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { loginSuccess } from "../../auth/authSlice";
+import logo from "../../../assets/logo.png"
 
 function FaSignIn() {
     //FOR NAVIGATE
@@ -37,10 +38,9 @@ function FaSignIn() {
                 console.log("Token stored:", token);
             }
             console.log(formData);
-            
-             // Dispatch Redux action to store token & user
-            dispatch(loginSuccess({ token, user: formData }));
-            // console.log("Success", response.data);
+
+            // Dispatch Redux action to store token & user
+            dispatch(loginSuccess({ token, user: formData.email }));
 
             setErrorMessage("success")
             return navigate("/faculty-DashBoard");
@@ -57,7 +57,7 @@ function FaSignIn() {
         }
     }
     return <>
-        <h1>SignIN page</h1>
+        {/* <h1>SignIN page</h1>
         {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
         <div className="container">
             <form onSubmit={FaSignIn}>
@@ -69,6 +69,31 @@ function FaSignIn() {
                 </div>
                 <button type="submit">Sign-Inn</button>
             </form>
+        </div> */}
+
+        <div className="container">
+            <h2 id="heading">Faculty</h2>
+            <div className="Innercontainer">
+                <div className="form">
+                    <form onSubmit={FaSignIn}>
+                        <h2>Sign In</h2>
+                        <div className="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" className="form-control" ref={emailRef} placeholder="Enter your email" required />
+                        </div>
+                        <div className="form-group">
+                            <label for="password">password</label>
+                            <input type="password" className="form-control" ref={passwordRef} placeholder="Enter your password" required />
+                            <span id="forget">forget password</span>
+                        </div>
+                        <button type="submit" className="btn btn-primary btn-block">Sign In</button>
+                        <Link className="btn btn-block text-dark" to={'/faculty-signUp'}>CREATE ACCOUNT<span className="text-primary"> SignIn</span></Link>
+                    </form>
+                </div>
+                <div className="image">
+                    <img src={logo} alt="Logo" />
+                </div>
+            </div>
         </div>
     </>
 }

@@ -1,4 +1,4 @@
-import "./SignUp.css";
+import "./SignIn.css";
 import logo from "../../../assets/logo.png";
 import { Link, useNavigate } from "react-router-dom";
 import { useRef, useState } from "react";
@@ -45,7 +45,9 @@ function SignUp() {
 
     return (
         <>
-            <div className="container">
+        <div className="container">
+            <h2 id="heading">Faculty</h2>
+            <div className="Innercontainer">
                 <div className="form">
                     <form onSubmit={signUp}>
                         <h2>Sign Up</h2>
@@ -73,6 +75,7 @@ function SignUp() {
                 </div>
                 <div className="image">
                     <img src={logo} alt="Logo" />
+                </div>
                 </div>
             </div>
         </>

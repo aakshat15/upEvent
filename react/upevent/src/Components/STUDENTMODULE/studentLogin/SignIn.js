@@ -4,9 +4,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { useRef } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { loginSuccess } from "../../auth/authSlice";
 
 function SignIn() {
     const navigate = useNavigate();
+
+    const dispatch = useDispatch();
 
     const emailRef = useRef();
     const passwordRef = useRef();
@@ -19,15 +23,16 @@ function SignIn() {
         }
         await axios.post("http://localhost:3000/student/student-signInn", formData)
             .then((res) => {
-                
+
                 const token = res.data.token; // Extract token from response
 
-                console.log(token);
-                
+                // console.log(token);
+                dispatch(loginSuccess({ token, user: formData.email }));
+
                 toast.success(res.data.Result || "Sign In ")
-                setTimeout(()=>{
+                setTimeout(() => {
                     navigate("/student-DashBoard")
-                },2000);
+                }, 2000);
             })
             .catch((error) => {
                 toast.error(error.response.data.message || error.response.data.error.errors[0].msg)
@@ -35,24 +40,27 @@ function SignIn() {
     }
     return <>
         <div className="container">
-            <div className="form">
-                <form onSubmit={signIn}>
-                    <h2>Sign In</h2>
-                    <div className="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" className="form-control" ref={emailRef} placeholder="Enter your email" required />
-                    </div>
-                    <div className="form-group">
-                        <label for="password">password</label>
-                        <input type="password" className="form-control" ref={passwordRef} placeholder="Enter your password" required />
-                        <span id="forget">forget password</span>
-                    </div>
-                    <button type="submit" className="btn btn-primary btn-block">Sign In</button>
-                    <Link className="btn btn-block text-dark" to={'/student-signUp'}>CREATE ACCOUNT<span className="text-primary"> SignIn</span></Link>
-                </form>
-            </div>
-            <div className="image">
-                <img src={logo} alt="Logo" />
+            <h2 id="heading">Faculty</h2>
+            <div className="Innercontainer">
+                <div className="form">
+                    <form onSubmit={signIn}>
+                        <h2>Sign In</h2>
+                        <div className="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" className="form-control" ref={emailRef} placeholder="Enter your email" required />
+                        </div>
+                        <div className="form-group">
+                            <label for="password">password</label>
+                            <input type="password" className="form-control" ref={passwordRef} placeholder="Enter your password" required />
+                            <span id="forget">forget password</span>
+                        </div>
+                        <button type="submit" className="btn btn-primary btn-block">Sign In</button>
+                        <Link className="btn btn-block text-dark" to={'/student-signUp'}>CREATE ACCOUNT<span className="text-primary"> SignIn</span></Link>
+                    </form>
+                </div>
+                <div className="image">
+                    <img src={logo} alt="Logo" />
+                </div>
             </div>
         </div>
     </>

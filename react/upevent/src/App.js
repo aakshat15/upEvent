@@ -27,7 +27,7 @@ function App() {
         <Route path="/faculty-getDetalis/:id" element={<GetDetalis/>}/>
 
 
-       <Route path="/student-DashBoard" element={<StudentDashBoard/>} />
+       <Route path="/student-DashBoard" element={<StudentDashBoard/>}/>
        <Route path="/student-EventForm/:id" element={<EventForm/>}/>
       </Route>
 

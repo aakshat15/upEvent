@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Chatbot Registration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .chat-container {
+            width: 400px;
+            margin: 50px auto;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+        }
+        .chat-box {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: 15px;
+        }
+        .message {
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .input-box {
+            display: flex;
+            border-top: 1px solid #ddd;
+        }
+        input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border: none;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<div class="chat-container">
+    <div class="chat-box" id="chatBox"></div>
+    <div class="input-box">
+        <input type="text" id="userInput" placeholder="Type your answer...">
+        <button onclick="sendResponse()">Send</button>
+    </div>
+</div>
+
+<script>
+    let step = 0;
+    let userData = {
+        name: '',
+        branch: '',
+        mobile: ''
+    };
+
+    const branches = ["Computer Science", "Mechanical", "Civil", "Electrical", "Electronics"];
+
+    function displayMessage(message, sender) {
+        const chatBox = document.getElementById("chatBox");
+        const newMessage = document.createElement("div");
+        newMessage.className = "message";
+        newMessage.innerText = (sender === 'bot' ? '🤖 Bot: ' : '🧑‍💻 You: ') + message;
+        chatBox.appendChild(newMessage);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function sendResponse() {
+        const input = document.getElementById("userInput");
+        const message = input.value.trim();
+
+        if(message === '') return;
+
+        
+        displayMessage(message, 'user');
+        input.value = '';
+
+        if(step === 0) {
+            userData.name = message;
+            displayMessage("Nice to meet you, " + message + ". Please select your branch:", 'bot');
+            branches.forEach(branch => {
+                displayMessage(branch, 'bot');
+            });
+            step++;
+        } else if(step === 1) {
+            if(branches.includes(message)) {
+                userData.branch = message;
+                displayMessage("Got it! Now, please enter your 10-digit mobile number.", 'bot');
+                step++;
+            } else {
+                displayMessage("Please select a valid branch from the list.", 'bot');
+            }
+        } else if(step === 2) {
+            if(/^[0-9]{10}$/.test(message)) {
+                userData.mobile = message;
+                displayMessage("Thank you! Your registration is complete.", 'bot');
+                displayMessage("✅ Name: " + userData.name + "\n✅ Branch: " + userData.branch + "\n✅ Mobile: " + userData.mobile, 'bot');
+                step++;
+            } else {
+                displayMessage("Please enter a valid 10-digit mobile number.", 'bot');
+            }
+        }
+    }
+
+    window.onload = function() {
+        displayMessage("Hello! Welcome to the registration chatbot. What's your name?", 'bot');
+    }
+</script>
+
+</body>
+</html>
