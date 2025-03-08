@@ -1,0 +1,96 @@
+body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      display: block;
+    }
+    .container-fluid {
+      display: flex;
+      height: 100vh;
+    }
+    .sidebar {
+      width: 20%;
+      background-color: #f4f4f4;
+      padding: 20px;
+      transition: all 0.3s;
+    }
+    .sidebar h2 {
+      margin-bottom: 20px;
+    }
+    .sidebar ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    .sidebar ul li {
+      margin-bottom: 10px;
+      color: #666;
+      cursor: pointer;
+      padding: 10px;
+      border-radius: 5px;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+    .sidebar ul li:hover {
+      background-color: #ddd;
+      transform: scale(1.05);
+    }
+    .sidebar button {
+      margin-top: 20px;
+      background-color: #ddd;
+      border: none;
+      padding: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+    .sidebar button:hover {
+      background-color: #ccc;
+      transform: scale(1.05);
+    }
+    .content {
+      width: 80%;
+      padding: 20px;
+    }
+    .content h1 {
+      margin-bottom: 20px;
+    }
+    .content input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+    }
+    table {
+      width: 100%;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: center;
+    }
+    .menu-icon {
+      display: none;
+      font-size: 24px;
+      cursor: pointer;
+    }
+    @media (max-width: 768px) {
+        .container-fluid{
+            flex-direction: column;
+        }
+      .sidebar {
+        display: none;
+        position: fixed;
+        width: 60%;
+        height: 100%;
+        background-color: #f4f4f4;
+        z-index: 1000;
+      }
+      .sidebar.active {
+        display: block;
+      }
+      .menu-icon {
+        display: block;
+        padding: 10px;
+      }
+      .content .table{
+        width: 50%;
+      }
+    }

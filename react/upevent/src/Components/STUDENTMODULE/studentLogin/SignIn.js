@@ -44,7 +44,7 @@ function SignIn() {
                 setLoading(false);
             })
     }
-    return <>
+    return <>   
         <div className="container">
             <h2 id="heading">Faculty</h2>
             <div className="Innercontainer">
