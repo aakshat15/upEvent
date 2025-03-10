@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useReducer, useState } from "react";
 import { toast } from "react-toastify";
-
+import './CreateStudent.css';
 function CreateStudent() {
 
     const [state, dispatch] = useReducer(reducer, {
@@ -36,41 +36,35 @@ function CreateStudent() {
                 }, 2000);
             })
             .catch((error) => {
-                setTimeout(() => {
+                console.log(error);
                     dispatch({ type: "setRollNumber", payload: "" });
                     setLoading(false);
-                    toast.error(error.response.data.message);
-                }, 2000);
+                    toast.error( "BAD REQUEST" || error.response.data.message );
             })
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-100">
-            <div className="bg-white p-6 rounded-xl shadow-lg w-96">
-                <h2 className="text-2xl font-semibold text-center mb-4">Create Student</h2>
-                <form onSubmit={createStudent} className="space-y-4">
-                    <input 
-                        className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" 
-                        type="email" 
-                        onChange={(e) => dispatch({ type: "setEmail", payload: e.target.value })} 
-                        placeholder="Enter student Email" 
-                    />
-                    <button 
-                        className={`w-full text-white p-2 rounded-lg ${loading ? 'bg-gray-400' : 'bg-blue-500 hover:bg-blue-600 transition'}`} 
-                        type="submit" 
-                        disabled={loading}
-                    >
-                        {loading ? "Loading..." : "SUBMIT"}
-                    </button>
-                </form>
-                {state.rollNumber && (
-                    <div className="mt-4 bg-green-100 border border-green-300 rounded-lg p-4 text-center">
-                        <p className="text-green-700 font-semibold">Roll Number:</p>
-                        <p className="text-lg font-bold">{state.rollNumber}</p>
-                    </div>
-                )}
+        <div className="container" id="CreateStudent" >
+        <h1>Create Student</h1>
+        <form className="form" onSubmit={createStudent}>
+            <input className="form-group"
+                type="email" 
+                onChange={(e) => dispatch({ type: "setEmail", payload: e.target.value })} 
+                placeholder="Enter student Email" 
+            />
+            <button className="btn btn-primary btn-block"
+                type="submit" 
+                disabled={loading  || !state.email.trim()}
+            >
+                {loading ? "Loading..." : "SUBMIT"}
+            </button>
+        </form>
+            <div>
+                <h2 className="text-light">ROLL NUMBER</h2>
+                <h3 className="text-center">⮟</h3>
+                <h2 id="Number">{state.rollNumber}</h2>
             </div>
-        </div>
+    </div>
     )
 }
 export default CreateStudent;

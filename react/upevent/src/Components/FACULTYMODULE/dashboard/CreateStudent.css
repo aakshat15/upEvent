@@ -1,0 +1,114 @@
+#CreateStudent {
+    background: linear-gradient(200deg, #c29ff8, #e0d1ff);
+    padding: 8vh;
+    border-radius: 15px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 60vw;
+    margin-top: 5vh;
+    position: relative;
+    transition: all 0.5s ease-in-out;
+}
+
+#CreateStudent h1 {
+    font-size: 2.5rem;
+    text-align: center;
+    color: #5b247a;
+    width: 100%;
+    font-weight: bold;
+    background-image: linear-gradient(200deg, #d682f2, #c15ed1, #a545e0, #8d31d7, #5a0fd9);
+    background-size: 400% 400%;
+    animation: colorShift 5s infinite linear;
+    margin-bottom: 2vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#CreateStudent h3 {
+    color: white;
+    font-size: 3rem;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+    margin-bottom: 1vh;
+}
+
+#CreateStudent #Number {
+    border: 2px solid #c29ff8;
+    box-shadow: 4px 4px 15px rgba(139, 92, 246, 0.5);
+    border-radius: 12px;
+    text-align: center;
+    padding: 1rem;
+    font-size: 1.5rem;
+    color: white;
+    background-color: rgba(139, 92, 246, 0.1);
+    text-shadow: 1px 1px 10px #9b59f6;
+    transition: all 0.3s ease-in-out;
+}
+
+#CreateStudent #Number:focus {
+    border-color: #ad20ff;
+    box-shadow: 0 0 25px #ad20ff;
+    transform: scale(1.05);
+}
+
+#CreateStudent form {
+    animation: none;
+    width: 55vw;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+#CreateStudent form input,
+#CreateStudent form button {
+    padding: 12px 20px;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+    font-size: 1rem;
+    transition: all 0.3s ease-in-out;
+}
+
+#CreateStudent form input {
+    background-color: #f3f0ff;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    border: 2px solid #c29ff8;
+    color: #5b247a;
+}
+
+#CreateStudent form input:focus {
+    border-color: #a545e0;
+    box-shadow: 0 0 25px #a545e0;
+    transform: scale(1.02);
+}
+
+#CreateStudent form button {
+    background-color: #ad20ff;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(139, 92, 246, 0.4);
+}
+
+#CreateStudent form button:hover {
+    background-color: #8d31d7;
+    box-shadow: 0 15px 40px rgba(139, 92, 246, 0.6);
+    transform: scale(1.05);
+}
+
+/* Gradient Animation */
+@keyframes colorShift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
