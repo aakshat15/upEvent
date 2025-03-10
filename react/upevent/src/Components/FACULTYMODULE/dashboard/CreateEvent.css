@@ -1,0 +1,62 @@
+.event-form {
+    background-color: white;
+    padding: 10vh;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    width: 80vw;
+    height: 80vh;
+    position: relative;
+}
+.event-form .form-control {
+    border: none;
+    border-bottom: 2px solid #ddd;
+    border-radius: 0;
+    padding-left: 0;
+    box-shadow: none;
+    margin: 5vh 0;
+}
+.event-form .form-group {
+    margin-bottom: 20px;
+    position: relative;
+
+}
+#eDATE {
+    position: absolute;
+    top: 1vh;
+    left: 100px;
+    pointer-events: none; 
+}
+.event-form h1 {
+    font-size: 10rem;
+    position: absolute;
+    text-align: center;
+    color: #5b247a;
+    width: 100%;
+    top: 0;
+    left: 0;
+    font-size: 2em;
+    font-weight: bold;
+    background-image: linear-gradient(135deg, #e3a1d9, #c070bc, #9b51a1, #732d91, #5b247a);
+    background-size: 400% 400%;
+    animation: colorShift 5s infinite linear;
+}
+
+@keyframes colorShift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+@media (max-width:865px) {
+    .event-form #eDATE {
+        position: absolute;
+        top: -10px;
+        left: 4px;
+        pointer-events: none; 
+    }
+}

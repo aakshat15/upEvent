@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Event Form</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #6b73ff, #000dff);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .event-form {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        .form-control {
+            border: none;
+            border-bottom: 2px solid #ddd;
+            border-radius: 0;
+            padding-left: 0;
+            box-shadow: none;
+            transition: border-color 0.3s;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="event-form">
+        <form>
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="Enter event name">
+            </div>
+            <div class="form-group">
+                <textarea class="form-control" rows="4" placeholder="Describe your event..."></textarea>
+            </div>
+            <div class="form-group">
+                <select class="form-control">
+                    <option value="" disabled selected>Choose Location</option>
+                    <option value="INDORE">Indore</option>
+                    <option value="BHOPAL">Bhopal</option>
+                    <option value="DEWAS">Dewas</option>
+                    <option value="PITAMPUR">Pitampur</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="datetime-local" class="form-control" placeholder="Date & Time">
+            </div>
+            <button type="submit" class="btn btn-custom btn-block">Create Event</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

@@ -30,6 +30,12 @@ body {
       border-radius: 5px;
       transition: background-color 0.3s, transform 0.2s;
     }
+    .sidebar ul li a:hover {
+      border: none;
+      outline: none;
+      text-decoration: none;
+      color: none;
+    }
     .sidebar ul li:hover {
       background-color: #ddd;
       transform: scale(1.05);
@@ -94,3 +100,9 @@ body {
         width: 50%;
       }
     }
+    /* .sidebar ul li a:hover {
+      border: none;
+      outline: none;
+      text-decoration: none;
+      color: none;
+    } */

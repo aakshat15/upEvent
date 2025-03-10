@@ -140,6 +140,7 @@ export const createStudent = async (req, res, next) => {
             const userEmail = await student.findOne({ where: { email } });
             const userEmailInFaculty = await faculty.findOne({ where: { email } });
 
+            
             if (userEmail || userEmailInFaculty) {
                 return res.status(401).json({
                     message: `EMAIL IS ALREADY REGISTERD`
@@ -153,7 +154,8 @@ export const createStudent = async (req, res, next) => {
             });
 
             return res.status(200).json({
-                message: `STUDENT REGISTERD`
+                message: `STUDENT REGISTERD` ,
+                rollNumber : rollNumber,
             });
 
         } catch (error) {
@@ -206,7 +208,7 @@ export const createEvent = async (req, res, next) => {
             });
 
         } catch (error) {
-            res.status(500).json({ message: `faculty not registerd due to ${error}` })
+            res.status(500).json({ message: `EVENT IS ALREADY EXSIST` })
         }
     }
     else {

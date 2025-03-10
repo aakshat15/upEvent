@@ -1,16 +1,16 @@
 import axios from "axios";
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import './CreateEvent.css'
+import { toast } from "react-toastify";
+//FOR GOOGLE CAPTCHA
+// import ReCAPTCHA from "react-google-recaptcha";
 
 function CreateEvent() {
-
-
-    const[error,setError]=useState("")
-    //NAVIGATE FOR
     const navigate = useNavigate();
     
     
-    const titileRef = useRef();
+    const titleRef = useRef();
     const descriptionRef = useRef();
     const endDateRef = useRef();
     const locationRef = useRef();
@@ -20,7 +20,7 @@ function CreateEvent() {
     const RegisterEvent = async (e) => {
         e.preventDefault();
         const eventData = {
-            title: titileRef.current.value,
+            title: titleRef.current.value,
             description: descriptionRef.current.value,
             endDate: endDateRef.current.value,
             location: locationRef.current.value
@@ -45,41 +45,45 @@ function CreateEvent() {
                 }
             );  
     
-            console.log("Event Created Successfully:", response.data);
-
-            //CLEAR MESSAGE OF ERROR
-            setError("EVENT CREATED")
-            alert("EVENT CREATED")
-
-            //NAVIGATE TO DASBOARD
-            navigate("/faculty-DashBoard")
+            toast.success(response.data||"CREATED SUCCESSFULL")
+            setTimeout(()=>{
+                navigate("/faculty-DashBoard")
+            },2000)
         } catch (error) {
             console.error("Error creating event:", error.response.data );
-            const errormsg = error.response.data.message
-            // console.log(errormsg);
-            setError(errormsg)
+            toast.error(error.response.data.message)
         }
     }
 
 
     return <>
-        <h1 >NOW CREATE EVENT</h1>
-        <span className="text text-danger">{error}</span>
+    <div className="container">
+    <div className="event-form">
+    <h1>CREATE EVENT NOW</h1>
         <form onSubmit={RegisterEvent}>
             <div className="form-group">
-                <input type="text" className="form-control" ref={titileRef} placeholder="Enter TITLE" required />
+                <input type="text"  className="form-control" ref={titleRef} placeholder="ENTER EVENT TITLE" required/>
+            </div>
+            <div className="form-group">    
+                <textarea className="form-control" ref={descriptionRef} rows="1" placeholder="Describe your event..." required></textarea>
             </div>
             <div className="form-group">
-                <textarea type="email" className="form-control" ref={descriptionRef} placeholder="Enter DESCRIPTION" required />
+                <select className="form-control" ref={locationRef} required>
+                    <option value="" disabled selected>Choose Location</option>
+                    <option value="INDORE">Indore</option>
+                    <option value="BHOPAL">Bhopal</option>
+                    <option value="DEWAS">Dewas</option>
+                    <option value="PITAMPUR">Pitampur</option>
+                </select>
             </div>
             <div className="form-group">
-                <input type="date" className="form-control" ref={endDateRef} placeholder="Enter endDate" required />
+                <label id="eDATE">EndDate</label>
+                <input type="date" ref={endDateRef}  className="form-control" id="endDate" placeholder="EndDate" required/>
             </div>
-            <div className="form-group">
-                <input type="text" className="form-control" ref={locationRef} placeholder="Enter location" required />
-            </div>
-            <button type="submit">SignUp</button>
+            <button type="submit" className="btn btn-primary btn-block">Create Event</button>
         </form>
+    </div>
+</div>
     </>
 }
 export default CreateEvent;

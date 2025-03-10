@@ -1,7 +1,8 @@
 import axios from "axios";
 import { useEffect, useReducer } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import dashBoard from "./Dashboard.css"
+import "./Dashboard.css";
+
 function FacultyDashBoard() {
     const navigate = useNavigate();
 
@@ -34,42 +35,67 @@ function FacultyDashBoard() {
 
     // Fetch all events on initial load
     useEffect(() => {
-        handleAllEventClick()
+        handleAllEventClick();
     }, []);
 
     // Fetch "My Events" when the button is clicked
     const handleMyEventClick = () => {
-        fetchEvents("http://localhost:3000/faculty/myEvents"); // API for faculty's own events
+        fetchEvents("http://localhost:3000/faculty/myEvents");
     };
 
     const handleAllEventClick = () => {
-        fetchEvents("http://localhost:3000/faculty/allEvents"); // API for faculty's All events
+        fetchEvents("http://localhost:3000/faculty/allEvents");
     };
 
     const handleClick = (id) => {
         navigate(`/faculty-getDetalis/${id}`);
     };
 
+    // BURGER FUNCTION
+    const toggleSidebar = () => {
+        const sidebar = document.getElementById('sidebar');
+        sidebar.classList.toggle('active');
+    };
+
+    //BURGER CLOSER FUNCTION
+    useEffect(() => {
+        const handleOutsideClick = (event) => {
+            const sidebar = document.getElementById('sidebar');
+            const menuIcon = document.querySelector('.menu-icon');
+
+            if (sidebar && menuIcon && !sidebar.contains(event.target) && !menuIcon.contains(event.target)) {
+                sidebar.classList.remove('active');
+            }
+        };
+        
+        document.addEventListener('click', handleOutsideClick);
+    }, []);
+
     return (
         <>
-            <div className={dashBoard}>
-                <div class="container-fluid p-0">
-                    <div class="menu-icon" onclick="toggleSidebar()">☰</div>
-                    <div class="sidebar" id="sidebar">
+            <div className="dashboard">
+                <div className="container-fluid p-0">
+                    {/* .BURGER */}
+                    <div className="menu-icon" onClick={toggleSidebar}>☰</div>
+
+                    {/* SIDEBAR */}
+                    <div className="sidebar" id="sidebar">
                         <h2>EVENTS</h2>
                         <ul>
-                            <li>ALL RUNING EVENTS</li>
-                            <li>REGISTER</li>
-                            <li>OWN CREATED EVENT</li>
-                            <li>ALL RUNING EVENTS</li>
+                            <li><Link to="/faculty-createEvent">CREATE EVENT</Link></li>
+                            <li><Link to="/faculty-createStudent">REGISTER STUDENT</Link></li>
+                            <li><Link onClick={handleAllEventClick}>ALL RUNNING EVENTS</Link></li>
+                            <li><Link onClick={handleMyEventClick}>OWN CREATED EVENTS</Link></li>
                         </ul>
-                        <button class="btn btn-primary">Sign out</button>
+                        <button className="btn btn-primary">Sign out</button>
                     </div>
-                    <div class="content">
+
+        
+                    <div className="content">
                         <h1>FACULTY DASHBOARD</h1>
-                        <input type="text" class="form-control" placeholder="Search" />
-                        <table class="table table-bordered table-hover">
-                            <thead class="thead-light">
+                        <input type="text" className="form-control" placeholder="Search" />
+                        <table className="table table-bordered table-hover">
+                            <thead className="thead-light">
                                 <tr>
                                     <th>TITLE</th>
                                     <th>DESCRIPTION</th>
@@ -84,11 +110,14 @@ function FacultyDashBoard() {
                                         <tr key={index} onClick={() => handleClick(event.id)} style={{ cursor: "pointer" }}>
                                             <td>{event.title}</td>
                                             <td>{event.description}</td>
+                                            <td>{event.endDate}</td>
+                                            <td>{event.location}</td>
+                                            <td>{event.createByFaculty}</td>
                                         </tr>
                                     ))
                                 ) : (
                                     <tr>
-                                        <td colSpan="2">No events available.</td>
+                                        <td colSpan="5" className="text-center">No events available.</td>
                                     </tr>
                                 )}
                             </tbody>
