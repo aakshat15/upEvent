@@ -1,0 +1,92 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    background-color: #e3f2fd;
+  }
+  
+  /* Glassmorphism Style for Table */
+  #table table {
+    border-collapse: collapse;
+    width: 90%;
+    max-width: 1000px;
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    backdrop-filter: blur(20px);
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  
+  /* Table Header */
+  thead th {
+    background-color: #4a90e2;
+    color: white;
+    padding: 15px;
+    text-align: center;
+    font-size: 18px;
+    letter-spacing: 1px;
+  }
+  
+  /* Table Body Rows */
+  tbody tr {
+    background-color: rgba(255, 255, 255, 0.5);
+    transition: transform 0.3s, box-shadow 0.3s;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  
+  /* Hover Effect with Smooth Scale */
+  tbody tr:hover {
+    background-color: #e1f5fe;
+    transform: scale(1.01);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+  }
+  
+  /* Table Cells */
+  td {
+    padding: 15px;
+    text-align: center;
+    color: #333;
+  }
+  
+  /* Alternate Row Color */
+  tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  /* Hover Effect without Text Disturbance */
+  tbody tr:hover td {
+    color: #333;
+    font-weight: bold;
+    text-shadow: none;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    #table {
+      height: auto;
+      padding: 20px;
+    }
+  
+    table {
+      width: 100%;
+    }
+  
+    thead th {
+      font-size: 14px;
+      padding: 10px;
+    }
+  
+    td {
+      font-size: 14px;
+      padding: 10px;
+    }
+  }
+  
+  /* Subtle Border Radius for Table */
+  #table table {
+    border-radius: 15px;
+  }
+  

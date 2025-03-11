@@ -2,7 +2,7 @@ import express from "express";
 import { createFaculty, facultySignInn, dashBoard, createStudent, createEvent, myEvents, allEvents, getDetails  } from "../controller/faculty.controller.js";
 import { verifyToken } from "../Middleware/auth.middleware.js";
 import { body } from "express-validator";
-
+import upload from "../Middleware/upLoad.middleware.js";
 const facultyRouter = express.Router();
 
 //LOGIN LOGOUT
@@ -31,14 +31,15 @@ facultyRouter.post("/createStudent",
     body("email", "ENTER VALID EMAIL").notEmpty().isEmail()
     , createStudent)
 
-
+    
 //CREATE EVENTS
 facultyRouter.post("/createEvent",
-    body("title" , "PLEASE ENTER TITLE").notEmpty(),
-    body("description" , "PLEASE FILLED DESCRIPTION").notEmpty(),
-    body("location" , "PLEASE ENTER LOCATION").notEmpty(),
-    body("endDate" , "PLEASE ENTER ENDDATE").notEmpty()
-    ,verifyToken, createEvent);
+    // body("title" , "PLEASE ENTER TITLE").notEmpty(),
+    // body("description" , "PLEASE FILLED DESCRIPTION").notEmpty(),
+    // body("location" , "PLEASE ENTER LOCATION").notEmpty(),
+    // body("endDate" , "PLEASE ENTER ENDDATE").notEmpty()
+     upload.single('image') , createEvent     
+      );
 
 
 //EVENTS

@@ -179,8 +179,11 @@ export const createEvent = async (req, res, next) => {
 
         try {
             const { title, description, location, endDate } = req.body;
-
-            // Extract token from cookies
+            const pitureUrl = req.file ? req.file.filename : null;
+            // console.log(title);
+            // console.log("pitureUrl"+pitureUrl);
+            
+            // Extract token
             const token = localStorage.getItem("token")
             if (!token) {
                 return res.status(401).json({ message: "Unauthorized: No token provided." });
@@ -189,7 +192,6 @@ export const createEvent = async (req, res, next) => {
             // Decode token to get faculty ID
             const decoded = jwt.verify(token, process.env.JWT_KEY);
             const createdByfaculty = decoded.id; // Extracting faculty ID from token
-
             // console.log("Faculty ID:", createdByfaculty);
 
             // Check if the event already exists
@@ -197,9 +199,9 @@ export const createEvent = async (req, res, next) => {
             if (existingEvent) {
                 return res.status(400).json({ message: `Event already exists: ${title}` });
             }
-
+            
             // Create a new event
-            const newEvent = await event.create({ title, description, endDate, location, createdByfaculty });
+            const newEvent = await event.create({ title, description, endDate, location, createdByfaculty , pitureUrl,});
 
             res.status(201).json({
                 message: "Event Created Successfully",
@@ -208,6 +210,8 @@ export const createEvent = async (req, res, next) => {
             });
 
         } catch (error) {
+            console.log(error);
+            
             res.status(500).json({ message: `EVENT IS ALREADY EXSIST` })
         }
     }

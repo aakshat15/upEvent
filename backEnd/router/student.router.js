@@ -16,10 +16,7 @@ studentRouter.post("/student-signUp" ,
     , signUp);
 
 
-studentRouter.post("/student-signInn" ,
-    body("email" , "Fill the email").notEmpty(),
-    body("email", "valid Email Enter").isEmail(), 
-    signInn);
+studentRouter.post("/student-signInn" , signInn);
 
 // // DASHBOARD
 studentRouter.get("/student-dashBoard" , verifyToken , dashboard);

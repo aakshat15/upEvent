@@ -1,9 +1,7 @@
 import express from "express";
-import bodyParser from "body-parser"
 
 import dotenv from "dotenv";
-import cookieParser from "cookie-parser";
-
+import path from 'path'
 
 import facultyRouter from "./router/faculty.router.js";
 import studentRouter from "./router/student.router.js";
@@ -14,6 +12,7 @@ import assosiationEventndDetailsModel from "./models/Association/EventndRegister
 import assisationEventRegistration from "./models/Association/assisation.eventRegistration.js";
 
 import cors from "cors";
+import upload from "./Middleware/upLoad.middleware.js";
 
 const app = express();
 
@@ -22,11 +21,10 @@ const app = express();
 app.use(cors({
     origin: 'http://localhost:3001', // Replace with your frontend URL
     credentials: true, // Allow credentials (cookies)
-  }))
+}))
 
-app.use(bodyParser.urlencoded({ extended : true}));
-app.use(bodyParser.json());
-app.use(cookieParser());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 
 // Use .env variables
@@ -41,13 +39,23 @@ sequelize.sync().then(() => {
     console.log(`ERROR DUE TO ${err}`);
 });
 
-//ROUTERSS
-app.use("/student" , studentRouter);
-app.use("/faculty" , facultyRouter);
-app.use("/api" , verifyRouter);
+app.post("/new", upload.single("image"), (req, res) => {
+   
+    
+    console.log(req.body.title);
+    
+    
+
+    req.body.imageUrl = "http://localhost:3000/images" + req.file.filename
+    console.log("http://localhost:3000/images" + req.file.filename)
+    res.send("ok");
+})
+app.use("/student", studentRouter);
+app.use("/faculty", facultyRouter);
+app.use("/api", verifyRouter);
 
 
 
-app.listen(PORT , () => {
+app.listen(PORT, () => {
     console.log(`http://localhost:${PORT}}`);
 })

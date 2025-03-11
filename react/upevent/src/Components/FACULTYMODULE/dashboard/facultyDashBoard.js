@@ -94,34 +94,34 @@ function FacultyDashBoard() {
                     <div className="content">
                         <h1>FACULTY DASHBOARD</h1>
                         <input type="text" className="form-control" placeholder="Search" />
-                        <table className="table table-bordered table-hover">
-                            <thead className="thead-light">
-                                <tr>
-                                    <th>TITLE</th>
-                                    <th>DESCRIPTION</th>
-                                    <th>ENDDATE</th>
-                                    <th>LOCATION</th>
-                                    <th>OWNER</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {state.AllEvent.length > 0 ? (
-                                    state.AllEvent.map((event, index) => (
-                                        <tr key={index} onClick={() => handleClick(event.id)} style={{ cursor: "pointer" }}>
-                                            <td>{event.title}</td>
-                                            <td>{event.description}</td>
-                                            <td>{event.endDate}</td>
-                                            <td>{event.location}</td>
-                                            <td>{event.createByFaculty}</td>
-                                        </tr>
-                                    ))
-                                ) : (
-                                    <tr>
-                                        <td colSpan="5" className="text-center">No events available.</td>
-                                    </tr>
-                                )}
-                            </tbody>
-                        </table>
+                        <table className="table table-bordered table-hover table-responsive-lg">
+  <thead className="thead-light">
+    <tr>
+      <th>TITLE</th>
+      <th>DESCRIPTION</th>
+      <th>ENDDATE</th>
+      <th>LOCATION</th>
+      <th>OWNER</th>
+    </tr>
+  </thead>
+  <tbody>
+    {state.AllEvent.length > 0 ? (
+      state.AllEvent.map((event, index) => (
+        <tr key={index} onClick={() => handleClick(event.id)} style={{ cursor: "pointer" }}>
+          <td>{event.title}</td>
+          <td>{event.description}</td>
+          <td>{event.endDate}</td>
+          <td>{event.location}</td>
+          <td>{event.createByFaculty}</td>
+        </tr>
+      ))
+    ) : (
+      <tr>
+        <td colSpan="5" className="text-center">No events available.</td>
+      </tr>
+    )}
+  </tbody>
+</table>
                     </div>
                 </div>
             </div>

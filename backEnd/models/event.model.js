@@ -10,6 +10,7 @@ const event = sequelize.define('event', {
     description: { type: DataTypes.STRING, allowNull: false },
     location: { type: DataTypes.STRING, allowNull: false },
     endDate: { type: DataTypes.STRING, allowNull: false },
+    pitureUrl:{ type:DataTypes.STRING , allowNull:false},
     // Foreign Key: Reference 'id' from 'details' table
     createdByfaculty: {
         type: DataTypes.INTEGER,
