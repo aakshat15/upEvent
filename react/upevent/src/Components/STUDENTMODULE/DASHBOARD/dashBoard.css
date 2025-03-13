@@ -1,92 +1,123 @@
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
+  width: 100%;
+  font-family: 'Poppins', sans-serif;
+  background-color: #f8f9fa;
+  color: #222;
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+}
+
+/* Navbar */
+.navbar {
+  border-radius: 8px;
+  background: white;
+  box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px;
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.navbar-brand img {
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+}
+
+.navbar .btn-primary {
+  border-radius: 24px;
+  padding: 10px 24px;
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  border: none;
+  font-weight: bold;
+  transition: all 0.3s ease-in-out;
+}
+
+.navbar .btn-primary:hover {
+  background: linear-gradient(135deg, #0056b3, #003580);
+}
+
+/* Section Headings */
+.studentDeshboard h1,.studentDeshboard h2 {
+  font-weight: 700;
+  color: #222;
+  padding-bottom: 6px;
+  margin-bottom: 24px;
+}
+
+.row {
+  margin-right: 0;
+  margin-left: 0;
+}
+
+/* Event Cards */
+.card {
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  border-radius: 10px;
+  overflow: hidden;
+  border: none;
+  box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.08);
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 5px 10px 12px gray;
+}
+
+.card-title {
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+.studentDeshboard .card img {
+  height: 220px;
+  object-fit: cover;
+  width: 100%;
+}
+
+.card-body {
+  padding: 22px;
+  text-align: center;
+}
+
+/* Buttons */
+.btn-outline-danger {
+  border-radius: 22px;
+  font-weight: bold;
+  transition: all 0.3s ease-in-out;
+  border: 2px solid #dc3545;
+  color: #dc3545;
+}
+
+.btn-outline-danger:hover {
+  background-color: #dc3545;
+  color: white;
+  box-shadow: 0px 4px 10px rgba(220, 53, 69, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    text-align: center;
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .navbar .btn-primary {
+    margin-top: 10px;
     width: 100%;
-    background-color: #e3f2fd;
   }
-  
-  /* Glassmorphism Style for Table */
-  #table table {
-    border-collapse: collapse;
-    width: 90%;
-    max-width: 1000px;
-    background: rgba(255, 255, 255, 0.2);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    border-radius: 15px;
-    backdrop-filter: blur(20px);
-    overflow: hidden;
-    transition: transform 0.3s, box-shadow 0.3s;
+
+  .card img {
+    height: auto;
+    max-height: 180px;
   }
-  
-  /* Table Header */
-  thead th {
-    background-color: #4a90e2;
-    color: white;
-    padding: 15px;
-    text-align: center;
-    font-size: 18px;
-    letter-spacing: 1px;
-  }
-  
-  /* Table Body Rows */
-  tbody tr {
-    background-color: rgba(255, 255, 255, 0.5);
-    transition: transform 0.3s, box-shadow 0.3s;
-    border-bottom: 1px solid #f0f0f0;
-  }
-  
-  /* Hover Effect with Smooth Scale */
-  tbody tr:hover {
-    background-color: #e1f5fe;
-    transform: scale(1.01);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
-    cursor: pointer;
-  }
-  
-  /* Table Cells */
-  td {
-    padding: 15px;
-    text-align: center;
-    color: #333;
-  }
-  
-  /* Alternate Row Color */
-  tbody tr:nth-child(even) {
-    background-color: #f9f9f9;
-  }
-  
-  /* Hover Effect without Text Disturbance */
-  tbody tr:hover td {
-    color: #333;
-    font-weight: bold;
-    text-shadow: none;
-  }
-  
-  /* Responsive Design */
-  @media (max-width: 768px) {
-    #table {
-      height: auto;
-      padding: 20px;
-    }
-  
-    table {
-      width: 100%;
-    }
-  
-    thead th {
-      font-size: 14px;
-      padding: 10px;
-    }
-  
-    td {
-      font-size: 14px;
-      padding: 10px;
-    }
-  }
-  
-  /* Subtle Border Radius for Table */
-  #table table {
-    border-radius: 15px;
-  }
-  
+}

@@ -14,20 +14,26 @@ function CreateEvent() {
     const descriptionRef = useRef();
     const endDateRef = useRef();
     const locationRef = useRef();
-
+    const [image, setFile] = useState(null);
 
 
     const RegisterEvent = async (e) => {
         e.preventDefault();
-        const eventData = {
-            title: titleRef.current.value,
-            description: descriptionRef.current.value,
-            endDate: endDateRef.current.value,
-            location: locationRef.current.value
+    
+        if (!image) {
+            toast.error("Please select an image.");
+            return;
         }
-
+    
+        const formData = new FormData();
+        formData.append("title", titleRef.current.value);
+        formData.append("description", descriptionRef.current.value);
+        formData.append("endDate", endDateRef.current.value);
+        formData.append("location", locationRef.current.value);
+        formData.append("image", image); // Append file
+    
         try {
-            const token = sessionStorage.getItem("token"); // Retrieve token from localStorage or sessionStorage
+            const token = sessionStorage.getItem("token"); 
             
             if (!token) {
                 console.error("No token found. Please log in.");
@@ -36,24 +42,24 @@ function CreateEvent() {
             
             const response = await axios.post(
                 "http://localhost:3000/faculty/createEvent",
-                eventData,
+                formData,
                 {
                     headers: {
-                        "Authorization": `Bearer ${token}`, // Add the authentication token
-                        "Content-Type": "application/json"
+                        "Authorization": `Bearer ${token}`,
+                        "Content-Type": "multipart/form-data", // Important for file upload
                     }
                 }
             );  
     
-            toast.success(response.data||"CREATED SUCCESSFULL")
-            setTimeout(()=>{
-                navigate("/faculty-DashBoard")
-            },2000)
+            toast.success("Event Created Successfully!");
+            setTimeout(() => {
+                navigate("/faculty-DashBoard");
+            }, 2000);
         } catch (error) {
-            console.error("Error creating event:", error.response.data );
-            toast.error(error.response.data.message)
+            console.error("Error creating event:", error.response?.data);
+            toast.error(error.response?.data?.message || "Error creating event");
         }
-    }
+    };
 
 
     return <>
@@ -79,6 +85,9 @@ function CreateEvent() {
             <div className="form-group">
                 <label id="eDATE">EndDate</label>
                 <input type="date" ref={endDateRef}  className="form-control" id="endDate" placeholder="EndDate" required/>
+            </div>
+            <div className="form-group">
+                <input type="file" onChange={(e)=>{ setFile(e.target.files[0]);}}  className="form-control" id="image"  required/>
             </div>
             <button type="submit" className="btn btn-primary btn-block">Create Event</button>
         </form>

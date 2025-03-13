@@ -10,7 +10,7 @@ import dotenv from "dotenv";
 import student from "../models/student.model.js";
 import faculty from "../models/faculty.model.js";
 import localStorage from "localStorage"
-
+import fs from 'fs';
 dotenv.config();
 const transport = nodemailer.createTransport({
     service: "gmail",
@@ -140,7 +140,7 @@ export const createStudent = async (req, res, next) => {
             const userEmail = await student.findOne({ where: { email } });
             const userEmailInFaculty = await faculty.findOne({ where: { email } });
 
-            
+
             if (userEmail || userEmailInFaculty) {
                 return res.status(401).json({
                     message: `EMAIL IS ALREADY REGISTERD`
@@ -154,8 +154,8 @@ export const createStudent = async (req, res, next) => {
             });
 
             return res.status(200).json({
-                message: `STUDENT REGISTERD` ,
-                rollNumber : rollNumber,
+                message: `STUDENT REGISTERD`,
+                rollNumber: rollNumber,
             });
 
         } catch (error) {
@@ -172,17 +172,21 @@ export const createStudent = async (req, res, next) => {
 }
 
 export const createEvent = async (req, res, next) => {
-
+    // Check if the event already exists
+    const filePath = `./public/images/${req.file.filename}`;
     let error = validationResult(req);
 
     if (error.isEmpty()) {
 
         try {
-            const { title, description, location, endDate } = req.body;
-            const pitureUrl = req.file ? req.file.filename : null;
-            // console.log(title);
-            // console.log("pitureUrl"+pitureUrl);
-            
+            // console.log(req.body.title);
+            // console.log("imagePath" + req.file.filename);
+            let { title, description, location, endDate } = req.body;
+            const imagePath = `http://localhost:3000/uploads/${req.file.filename}`;
+
+            // endDate = new Date(endDate).getTime();
+            // console.log(endDate);
+            // console.log(Date.now() + "=")
             // Extract token
             const token = localStorage.getItem("token")
             if (!token) {
@@ -192,16 +196,22 @@ export const createEvent = async (req, res, next) => {
             // Decode token to get faculty ID
             const decoded = jwt.verify(token, process.env.JWT_KEY);
             const createdByfaculty = decoded.id; // Extracting faculty ID from token
-            // console.log("Faculty ID:", createdByfaculty);
 
-            // Check if the event already exists
+
             let existingEvent = await event.findOne({ where: { title, endDate } });
             if (existingEvent) {
+                fs.unlink(filePath, (err) => {
+                    if (err) {
+                        console.error('Error deleting file:', err);
+                    }
+                    console.log("EVENT EXISTENG AND DELETE PITURE");
+
+                });
                 return res.status(400).json({ message: `Event already exists: ${title}` });
             }
-            
+
             // Create a new event
-            const newEvent = await event.create({ title, description, endDate, location, createdByfaculty , pitureUrl,});
+            const newEvent = await event.create({ title, description, endDate, location, createdByfaculty, imagePath, });
 
             res.status(201).json({
                 message: "Event Created Successfully",
@@ -210,12 +220,22 @@ export const createEvent = async (req, res, next) => {
             });
 
         } catch (error) {
-            console.log(error);
-            
+            fs.unlink(filePath, (err) => {
+                if (err) {
+                    console.error('Error deleting file:', err);
+                }
+                console.log("delete successfuly");
+            });
             res.status(500).json({ message: `EVENT IS ALREADY EXSIST` })
         }
     }
     else {
+        fs.unlink(filePath, (err) => {
+            if (err) {
+                console.error('Error deleting file:', err);
+            }
+            console.log('File deleted successfully!');
+        });
         return res.status(400).json({ error: "Bad request", errors: error.array() });
     }
 

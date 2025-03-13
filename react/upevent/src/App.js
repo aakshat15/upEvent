@@ -25,7 +25,7 @@ function App() {
         <Route path="/faculty-createEvent" element={<CreateEvent />} />
         <Route path="/faculty-createStudent" element={<CreateStudent/>}/>
         <Route path="/faculty-getDetalis/:id" element={<GetDetalis/>}/>
-
+        
 
        <Route path="/student-DashBoard" element={<StudentDashBoard/>}/>
        <Route path="/student-EventForm/:id" element={<EventForm/>}/>

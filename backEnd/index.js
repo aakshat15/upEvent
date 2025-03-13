@@ -13,18 +13,19 @@ import assisationEventRegistration from "./models/Association/assisation.eventRe
 
 import cors from "cors";
 import upload from "./Middleware/upLoad.middleware.js";
+import { fileURLToPath } from "url";
 
 const app = express();
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 //CORS USED FOR THE AXIOS 
-app.use(cors({
-    origin: 'http://localhost:3001', // Replace with your frontend URL
-    credentials: true, // Allow credentials (cookies)
-}))
+app.use(cors());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use("/uploads", express.static(path.join(__dirname, "public/images")));
 
 
 // Use .env variables
