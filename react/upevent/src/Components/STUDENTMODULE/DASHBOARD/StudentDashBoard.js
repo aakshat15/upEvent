@@ -52,7 +52,7 @@ function StudentDashBoard() {
                                     <div className="card-body">
                                         <h5 className="card-title">{event.title}</h5>
                                         <p className="text-danger">End Date: {event.endDate}</p>
-                                        <button className="btn btn-danger">READ MORE</button>
+                                        <button className="btn btn-danger">REGISTER NOW</button>
                                     </div>
                                 </div>
                             </div>

@@ -47,8 +47,8 @@ function FacultyDashBoard() {
         fetchEvents("http://localhost:3000/faculty/allEvents");
     };
 
-    const handleClick = (id) => {
-        navigate(`/faculty-getDetalis/${id}`);
+    const handleClick = (id,event) => {
+        navigate(`/faculty-getDetalis/${id}`,{ state: { eventData: event } });
     };
 
     // BURGER FUNCTION
@@ -93,34 +93,47 @@ function FacultyDashBoard() {
                     <div className="content">
                         <h1>FACULTY DASHBOARD</h1>
                         <input type="text" className="form-control" placeholder="Search" />
-                        <div className="table-container">
-                        <table className="table table-bordered table-hover table-responsive-lg">
-                            <thead className="thead-light">
-                                <tr>
-                                    <th>TITLE</th>
-                                    <th>LOCATION</th>
-                                    <th>piture</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {state.AllEvent.length > 0 ? (
-                                    state.AllEvent.map((event, index) => (
-                                        <tr key={index} onClick={() => handleClick(event.id)} style={{ cursor: "pointer" }}>
-                                            <td>{event.title}</td>
-                                            {/* <td>{event.description}</td> */}
-                                            {/* <td>{event.endDate}</td> */}
-                                            <td>{event.location}</td>
-                                            <td><img id='img' src={`${event.imagePath}`} /></td>
-                                        </tr>
-                                    ))
-                                ) : (
-                                    <tr>
-                                        <td colSpan="5" className="text-center">No events available.</td>
-                                    </tr>
-                                )}
-                            </tbody>
-                        </table>
-                    </div>
+                        <div className="data-container">
+                            <div className="upComingcontainer mt-4">
+                                <h1>UPCOMING EVENT</h1>
+                                <div className="row">
+                                    {state.AllEvent
+                                        .filter(event => new Date(event.endDate).getTime() >= Date.now()) // Filtering events based on end date
+                                        .map((event, index) => (
+                                            <div className="col-md-4 mb-4" key={index}>
+                                                <div className="card" onClick={() => handleClick(event.id,event)} style={{ cursor: "pointer" }}>
+                                                    <img src={event.imagePath} className="card-img-top w-100" alt="Event Image" />
+                                                    <div className="card-body">
+                                                        <h5 className="card-title">{event.title}</h5>
+                                                        <p className="text-danger">End Date: {event.endDate}</p>
+                                                        <button className="btn btn-danger">READ MORE</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                </div>
+
+                            </div>
+                            <h1>RECENT END EVENT</h1>
+                            <div className="endcontainer mt-4">
+                                <div className="row">
+                                    {state.AllEvent
+                                        .filter(event => new Date(event.endDate).getTime() <= Date.now()) // Filtering events based on end date
+                                        .map((event, index) => (
+                                            <div className="col-md-4 mb-4" key={index}>
+                                                <div className="card" onClick={() => handleClick(event.id,event)} style={{ cursor: "pointer" }}>
+                                                    <img src={event.imagePath} className="card-img-top w-100" alt="Event Image" />
+                                                    <div className="card-body">
+                                                        <h5 className="card-title">{event.title}</h5>
+                                                        <p className="text-danger">End Date: {event.endDate}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

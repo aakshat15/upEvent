@@ -168,8 +168,9 @@ export const eventRegister = async (req, res, next) => {
 
             const { studentName, studentEmail } = req.body;
             const eventId = req.params.eventId;
-
-            const token = req.cookies.token;
+            console.log(req.body);
+            
+            const token = localStorage.getItem('token');
             if (!token) {
                 return res.status(401).json({ message: "Unauthorized: SIGNINN FIRST" });
             }
@@ -177,14 +178,14 @@ export const eventRegister = async (req, res, next) => {
 
             // Decode token to get faculty ID
             const decoded = jwt.verify(token, process.env.JWT_KEY);
-            // console.log(decoded);
+            console.log(decoded.id);
 
             const rollNumber = decoded.id; // Extracting faculty ID from token
 
 
-            let existingRegistrations = await EventRegistration.findAll({ where: { studentName, eventId } });
-
-            if (existingRegistrations.length > 0) {
+            let existingRegistrations = await EventRegistration.findOne({ where: { studentName, eventId } });
+            console.log(existingRegistrations);
+            if (existingRegistrations) {
                 return res.status(400).json({ result: 'ALREADY REGISTERED' });
             }
 
