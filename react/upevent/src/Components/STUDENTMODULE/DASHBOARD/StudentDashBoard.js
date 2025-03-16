@@ -1,85 +1,164 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import logo from "../../../assets/logo.png"
-import "./dashBoard.css"
+import { Link, useNavigate } from "react-router-dom";
+import logo from "../../../assets/logo.png";
+import "./dashBoard.css";
+
 function StudentDashBoard() {
     const navigate = useNavigate();
-    const [data, setData] = useState([]);
+    const [unregisteredEvents, setUnregisteredEvents] = useState([]);
+    const [registeredEvents, setRegisteredEvents] = useState([]);
+    const [activeTab, setActiveTab] = useState("upcoming");
+    const [isOpen, setIsOpen] = useState(false);
 
     useEffect(() => {
+        fetchUnregisteredEvents();
+        fetchRegisteredEvents();
+    }, []);
 
-        const fetchData = async () => {
-            await axios.get("http://localhost:3000/student/student-dashboard")
-                .then((res) => {
-                    setData(res.data.EVENT);
-                    // console.log(res.data.EVENT[1].endDate);
-                    // console.log(Date.now());
-
-                })
-                .catch((error) => {
-                    console.log(error);
-                    alert("SERVER ERROR")
-                })
+    const fetchUnregisteredEvents = async () => {
+        try {
+            const res = await axios.get("http://localhost:3000/student/student-dashboard");
+            setUnregisteredEvents(res.data.UNREGISTERDEVENT);
+        } catch (error) {
+            console.error("Error fetching unregistered events:", error);
+            alert("SERVER ERROR");
         }
-        fetchData();
-    }, [])
+    };
 
+    const fetchRegisteredEvents = async () => {
+        try {
+            const res = await axios.get("http://localhost:3000/student/student-dashboard");
+            setRegisteredEvents(res.data.REGISTEREDEVENT);
+        } catch (error) {
+            console.error("Error fetching registered events:", error);
+            alert("SERVER ERROR");
+        }
+    };
 
-    const handleClick = (id) => {
-        navigate(`/student-eventForm/${id}`)
-    }
-    return <>
-        <div className="studentDeshboard">
-            <nav className="navbar">
+    const handleForm = (id) => {
+        navigate(`/student-eventForm/${id}`);
+    };
+
+    const handleDetails = (id) => {
+        console.log(id);
+    };
+
+    return (
+        <div className="studentDashboard">
+            <nav className="navbar navbar-expand-lg navbar-light bg-light">
                 <a className="navbar-brand" id="nav" href="#">
-                    <img src={logo} width="30" height="30" className="d-inline-block align-top mr-2" alt="Logo" />
+                    <img src={logo} alt="Logo" />
                     <span>Bootstrap</span>
                 </a>
-                {/* <div className="ml-auto"> */}
-                <button className="btn btn-primary">Action Button</button>
-                {/* </div> */}
+
+                {/* Burger Button for Mobile */}
+                <button
+                    className="navbar-toggler"
+                    type="button"
+                    onClick={() => setIsOpen(!isOpen)}
+                >
+                    <span className="navbar-toggler-icon"></span>
+                </button>
+
+                {/* Collapsible Navbar Links */}
+                <div className={`collapse navbar-collapse ${isOpen ? "show" : ""}`}>
+                    <div className="navbar-nav ml-auto">
+                        <Link className="nav-link" onClick={() => setActiveTab("upcoming")}>
+                            Upcoming Events
+                        </Link>
+                        <Link className="nav-link" onClick={() => setActiveTab("past")}>
+                            Past Events
+                        </Link>
+                        <Link className="nav-link" onClick={() => setActiveTab("registered")}>
+                            Registered Events
+                        </Link>
+                    </div>
+                </div>
             </nav>
-            <div className="upComingcontainer mt-4">
-            <h1>UPCOMING EVENT</h1>
-                <div className="row">
-                    {data
-                        .filter(event => new Date(event.endDate).getTime() >= Date.now()) // Filtering events based on end date
-                        .map((event, index) => (
-                            <div className="col-md-4 mb-4" key={index}>
-                                <div className="card" onClick={() => handleClick(event.id)} style={{ cursor: "pointer" }}>
-                                    <img src={event.imagePath} className="card-img-top w-100" alt="Event Image" />
-                                    <div className="card-body">
-                                        <h5 className="card-title">{event.title}</h5>
-                                        <p className="text-danger">End Date: {event.endDate}</p>
-                                        <button className="btn btn-danger">REGISTER NOW</button>
+
+            {/* Upcoming Events */}
+            {activeTab === "upcoming" && (
+                <div className="upcoming-container mt-4">
+                    <h1>UPCOMING EVENTS</h1>
+                    <div className="row">
+                        {unregisteredEvents
+                            .filter((event) => new Date(event.endDate).getTime() >= Date.now())
+                            .map((event) => (
+                                <div className="col-md-4 mb-4" key={event.id}>
+                                    <div
+                                        className="card"
+                                        onClick={() => handleForm(event.id)}
+                                        style={{ cursor: "pointer" }}
+                                    >
+                                        <img src={event.imagePath} className="card-img-top w-100" alt="Event" />
+                                        <div className="card-body">
+                                            <h5 className="card-title">{event.title}</h5>
+                                            <p className="text-danger">End Date: {new Date(event.endDate).toDateString()}</p>
+                                            <button className="btn btn-danger">REGISTER NOW</button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        ))}
+                            ))}
+                    </div>
                 </div>
+            )}
 
-            </div>
-            <h1>RECENT END EVENT</h1>
-            <div className="endcontainer mt-4">
-                <div className="row">
-                    {data
-                        .filter(event => new Date(event.endDate).getTime() <= Date.now()) // Filtering events based on end date
-                        .map((event, index) => (
-                            <div className="col-md-4 mb-4" key={index}>
-                                <div className="card" onClick={() => handleClick(event.id)} style={{ cursor: "pointer" }}>
-                                    <img src={event.imagePath} className="card-img-top w-100" alt="Event Image" />
-                                    <div className="card-body">
-                                        <h5 className="card-title">{event.title}</h5>
-                                        <p className="text-danger">End Date: {event.endDate}</p>
+            {/* Past Events */}
+            {activeTab === "past" && (
+                <div className="past-container mt-4">
+                    <h1>RECENTLY ENDED EVENTS</h1>
+                    <div className="row">
+                        {unregisteredEvents
+                            .filter((event) => new Date(event.endDate).getTime() < Date.now())
+                            .map((event) => (
+                                <div className="col-md-4 mb-4" key={event.id}>
+                                    <div
+                                        className="card"
+                                        onClick={() => handleDetails(event.id)}
+                                        style={{ cursor: "pointer" }}
+                                    >
+                                        <img src={event.imagePath} className="card-img-top w-100" alt="Event" />
+                                        <div className="card-body">
+                                            <h5 className="card-title">{event.title}</h5>
+                                            <p className="text-danger">End Date: {new Date(event.endDate).toDateString()}</p>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        ))}
+                            ))}
+                    </div>
                 </div>
+            )}
 
-            </div>
+            {/* Registered Events */}
+            {activeTab === "registered" && (
+                <div className="registered-container mt-4">
+                    <h1>REGISTERED EVENTS</h1>
+                    <div className="row">
+                        {registeredEvents.length === 0 ? (
+                            <p>No registered events found.</p>
+                        ) : (
+                            registeredEvents.map((event) => (
+                                <div className="col-md-4 mb-4" key={event.id}>
+                                    <div
+                                        className="card"
+                                        onClick={() => handleDetails(event.id)}
+                                        style={{ cursor: "pointer" }}
+                                    >
+                                        <img src={event.imagePath} className="card-img-top w-100" alt="Event" />
+                                        <div className="card-body">
+                                            <h5 className="card-title">{event.title}</h5>
+                                            <p className="text-danger">End Date: {new Date(event.endDate).toDateString()}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))
+                        )}
+                    </div>
+                </div>
+            )}
         </div>
-    </>
+    );
 }
+
 export default StudentDashBoard;

@@ -28,8 +28,9 @@ function SignIn() {
 
                 const token = res.data.token; // Extract token from response
 
-                // console.log(token);
-                dispatch(loginSuccess({ token, user: formData.email }));
+                const user = res.data.user;
+                
+                dispatch(loginSuccess({ token, user}));
 
                 toast.success(res.data.Result || "Sign In ")
                 setTimeout(() => {

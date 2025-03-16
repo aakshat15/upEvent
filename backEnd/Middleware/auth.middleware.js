@@ -9,7 +9,6 @@ export const verifyToken = (req, res, next) => {
     if (token) {
         try {
             const decoded = jwt.verify(token, process.env.JWT_KEY); 
-            console.log(decoded);
             req.user = decoded; // RETURN ID
             next(); // Continue to protected route
         } catch (error) {

@@ -2,7 +2,7 @@
   "name": "upevent",
   "version": "0.1.0",
   "private": true,
-  "proxy" :"http://localhost:3000", 
+  "proxy": "http://localhost:3000",
   "dependencies": {
     "@reduxjs/toolkit": "^2.6.0",
     "@testing-library/dom": "^10.4.0",
@@ -42,5 +42,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "webpack-cli": "^6.0.1"
   }
 }

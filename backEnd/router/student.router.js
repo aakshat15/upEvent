@@ -26,9 +26,9 @@ studentRouter.get("/event/:eventId" , verifyToken , Oneevent)
 
 
 studentRouter.post("/event/register/:eventId" ,
-    body("studentEmail" , "Fill the email").notEmpty(),
-    body("studentEmail", "valid Email Enter").isEmail(), 
-    body("studentName" , "PLEASE FILL NAME").notEmpty(),
+    body("email" , "Fill the email").notEmpty(),
+    body("email", "valid Email Enter").isEmail(), 
+    body("name" , "PLEASE FILL NAME").notEmpty(),
     verifyToken , eventRegister )
 
 export default studentRouter;

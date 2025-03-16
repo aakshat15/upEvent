@@ -7,8 +7,10 @@ import student from "./student.model.js";
 const EventRegistration  = Sequelize.define(`revents`, {
                                     
         id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-        studentName: { type: DataTypes.STRING, allowNull: false },
-        studentEmail: { type: DataTypes.STRING, allowNull: false },
+        name: { type: DataTypes.STRING, allowNull: false },
+        email: { type: DataTypes.STRING, allowNull: false },
+        branch: {type: DataTypes.STRING , allowNull:false}  ,
+        number: {type:DataTypes.BIGINT , allowNull:false},
         eventId: { 
             type: DataTypes.INTEGER,  
             allowNull: false,  
@@ -21,6 +23,6 @@ const EventRegistration  = Sequelize.define(`revents`, {
         }
     }, {
         timestamps: true
-    });
+    }); 
 
 export default EventRegistration;

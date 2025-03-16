@@ -70,7 +70,7 @@ export const signUp = async (req, res, next) => {
             }
     } catch (error) {
         // Catch and handle server errors
-        console.error('Error during sign-up:', error);
+        console.log('Error during sign-up:', error);
         return res.status(500).json({ message: `Server Error: ${error.message}` });
     }
     }
@@ -84,12 +84,11 @@ export const signInn = async (req, res, next) => {
 
     if (error.isEmpty()) {
         try {
-            console.log(req.body);
-            
             const { email, password } = req.body;
             
             
             let user = await student.findOne({ where: { email } })
+            
             if (!user || user.password==null){
                 return res.status(400).json({ message: "Register First" })
             } 
@@ -112,7 +111,7 @@ export const signInn = async (req, res, next) => {
                     localStorage.setItem("token", token)
                     
                     
-                    return res.status(200).json({  Result:'Sign Inn success' , token})
+                    return res.status(200).json({  Result:'Sign Inn success' , token , user})
                     // return res.status(200).json({ Route_get: "/student/student-dashBoard` " })
                 }
                 else { return res.status(400).json({ message: `password is Wroung` }) }
@@ -131,13 +130,27 @@ export const signInn = async (req, res, next) => {
 export const dashboard = async (req, res, next) => {
 
     try {
+         // Decode token to get student roll number
+         const token = localStorage.getItem('token')
+         const decoded = jwt.verify(token, process.env.JWT_KEY);
+         const rollNumber = decoded.id;
+        
+       // Fetch all events
 
-        const events = await event.findAll({})
+       const events = await event.findAll({});
 
-        // res.cookie("eventId", events.id)
+         // Fetch registered events for the student
+         const registeredEvents = await EventRegistration.findAll({
+            where: { rollNumber }
+        });
 
+        const registeredEventsId =registeredEvents.map(reevents => reevents.eventId)
 
-        res.status(200).json({ RESULT: "Success Deshboard Render", EVENT: events })
+        const unRegisterdEvent = events.filter(evt => !registeredEventsId.includes(evt.id))
+
+        const registeredEvent = events.filter(evt => registeredEventsId.includes(evt.id))
+
+        res.status(200).json({ RESULT: "Success Deshboard Render", UNREGISTERDEVENT: unRegisterdEvent , REGISTEREDEVENT:registeredEvent })
 
     } catch (error) {
         res.status(500).json({ Erro: `Server Error Due to${error}` })
@@ -166,9 +179,8 @@ export const eventRegister = async (req, res, next) => {
 
         try {
 
-            const { studentName, studentEmail } = req.body;
+            const { name , email , branch , number } = req.body;
             const eventId = req.params.eventId;
-            console.log(req.body);
             
             const token = localStorage.getItem('token');
             if (!token) {
@@ -178,19 +190,17 @@ export const eventRegister = async (req, res, next) => {
 
             // Decode token to get faculty ID
             const decoded = jwt.verify(token, process.env.JWT_KEY);
-            console.log(decoded.id);
 
             const rollNumber = decoded.id; // Extracting faculty ID from token
 
 
-            let existingRegistrations = await EventRegistration.findOne({ where: { studentName, eventId } });
-            console.log(existingRegistrations);
-            if (existingRegistrations) {
-                return res.status(400).json({ result: 'ALREADY REGISTERED' });
-            }
+            // let existingRegistrations = await EventRegistration.findOne({ where: { studentName, eventId } });
+            // if (existingRegistrations) {
+            //     return res.status(400).json({ result: 'ALREADY REGISTERED' });
+            // }
 
 
-            let event = await EventRegistration.create({ studentName, studentEmail, eventId, rollNumber })
+            let event = await EventRegistration.create({ name, email , branch , number, eventId, rollNumber })
 
             res.status(200).json({ result: { event } })
         } catch (error) {
