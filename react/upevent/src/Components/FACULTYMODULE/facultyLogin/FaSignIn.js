@@ -38,7 +38,7 @@ function FaSignIn() {
             if (token) {
                 console.log("Token stored:", token);
             }
-            console.log(formData);
+            // console.log(formData);
 
             // Dispatch Redux action to store token & user
             dispatch(loginSuccess({ token, user: formData.email }));
@@ -62,27 +62,15 @@ function FaSignIn() {
             }
         }
         finally {
-            setLoading(false)
+            setTimeout(() => {
+                setLoading(false)
+            }, 2500);
         }
     }
     return <>
-        {/* <h1>SignIN page</h1>
-        {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
         <div className="container">
-            <form onSubmit={FaSignIn}>
-                <div className="form-group">
-                    <input type="text" className="form-control" ref={emailRef} placeholder="Enter email" required />
-                </div>
-                <div className="form-group">
-                    <input type="text" className="form-control" ref={passwordRef} placeholder="Enter password" required />
-                </div>
-                <button type="submit">Sign-Inn</button>
-            </form>
-        </div> */}
-
-        <div className="container">
-            <h2 id="heading">Faculty</h2>
             <div className="Innercontainer">
+            <h2 id="heading">FACULTY SIGN-INN</h2>
                 <div className="form">
                     <form onSubmit={FaSignIn}>
                         <h2>Sign In</h2>

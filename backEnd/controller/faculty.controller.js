@@ -184,9 +184,6 @@ export const createEvent = async (req, res, next) => {
             let { title, description, location, endDate } = req.body;
             const imagePath = `http://localhost:3000/uploads/${req.file.filename}`;
 
-            // endDate = new Date(endDate).getTime();
-            // console.log(endDate);
-            // console.log(Date.now() + "=")
             // Extract token
             const token = localStorage.getItem("token")
             if (!token) {
@@ -196,9 +193,10 @@ export const createEvent = async (req, res, next) => {
             // Decode token to get faculty ID
             const decoded = jwt.verify(token, process.env.JWT_KEY);
             const createdByfaculty = decoded.id; // Extracting faculty ID from token
-
-
+            
             let existingEvent = await event.findOne({ where: { title, endDate } });
+            // console.log(existingEvent);
+            
             if (existingEvent) {
                 fs.unlink(filePath, (err) => {
                     if (err) {
@@ -210,13 +208,14 @@ export const createEvent = async (req, res, next) => {
                 return res.status(400).json({ message: `Event already exists: ${title}` });
             }
 
+            
             // Create a new event
             const newEvent = await event.create({ title, description, endDate, location, createdByfaculty, imagePath, });
 
             res.status(201).json({
                 message: "Event Created Successfully",
                 event: newEvent,
-                dashboardURL: `/faculty/faculty-dashBoard/${createdByfaculty}`
+                // dashboardURL: `/faculty/faculty-dashBoard/${createdByfaculty}`
             });
 
         } catch (error) {

@@ -6,8 +6,8 @@ import "./dashBoard.css";
 
 function StudentDashBoard() {
     const navigate = useNavigate();
-    const [unregisteredEvents, setUnregisteredEvents] = useState([]);
     const [registeredEvents, setRegisteredEvents] = useState([]);
+    const [unregisteredEvents, setUnregisteredEvents] = useState([]);
     const [activeTab, setActiveTab] = useState("upcoming");
     const [isOpen, setIsOpen] = useState(false);
 
@@ -44,7 +44,7 @@ function StudentDashBoard() {
         console.log(id);
     };
 
-    return (
+    return <>
         <div className="studentDashboard">
             <nav className="navbar navbar-expand-lg navbar-light bg-light">
                 <a className="navbar-brand" id="nav" href="#">
@@ -79,8 +79,8 @@ function StudentDashBoard() {
 
             {/* Upcoming Events */}
             {activeTab === "upcoming" && (
-                <div className="upcoming-container mt-4">
-                    <h1>UPCOMING EVENTS</h1>
+                <div className="upcoming-container">
+                    <h1 className="heading">UPCOMING EVENTS</h1>
                     <div className="row">
                         {unregisteredEvents
                             .filter((event) => new Date(event.endDate).getTime() >= Date.now())
@@ -106,8 +106,8 @@ function StudentDashBoard() {
 
             {/* Past Events */}
             {activeTab === "past" && (
-                <div className="past-container mt-4">
-                    <h1>RECENTLY ENDED EVENTS</h1>
+                <div className="past-container">
+                    <h1 className="heading">RECENTLY ENDED EVENTS</h1>
                     <div className="row">
                         {unregisteredEvents
                             .filter((event) => new Date(event.endDate).getTime() < Date.now())
@@ -132,8 +132,8 @@ function StudentDashBoard() {
 
             {/* Registered Events */}
             {activeTab === "registered" && (
-                <div className="registered-container mt-4">
-                    <h1>REGISTERED EVENTS</h1>
+                <div className="registered-container">
+                    <h1 className="heading">REGISTERED EVENTS</h1>
                     <div className="row">
                         {registeredEvents.length === 0 ? (
                             <p>No registered events found.</p>
@@ -158,7 +158,7 @@ function StudentDashBoard() {
                 </div>
             )}
         </div>
-    );
+    </>
 }
 
 export default StudentDashBoard;

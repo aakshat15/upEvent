@@ -28,11 +28,12 @@ body {
 
 
 /* Section Headings */
-.studentDeshboard h1,.studentDeshboard h2 {
-  font-weight: 700;
-  color: #222;
-  padding-bottom: 6px;
-  margin-bottom: 24px;
+.studentDashboard .heading{
+  font-weight: 800;
+  color: black;
+  text-align: center;
+  font-size: 2rem;
+  /* background: linear-gradient(135deg, #ffffff, #f8f9fa); */
 }
 
 .row {

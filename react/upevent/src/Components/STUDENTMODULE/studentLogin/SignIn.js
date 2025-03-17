@@ -39,16 +39,18 @@ function SignIn() {
             })
             .catch((error) => {
                 console.log(error.response);
-                
+                setLoading(false)
                 toast.error(error.response.data.message || error.response.data.error.errors[0].msg)
             }).finally(()=>{
-                setLoading(false);
+                setTimeout(() => {
+                    setLoading(false)
+                }, 2500);
             })
     }
     return <>   
         <div className="container">
-            <h2 id="heading">Faculty</h2>
             <div className="Innercontainer">
+            <h2 id="heading">STUDENT SIGN IN</h2>
                 <div className="form">
                     <form onSubmit={signIn}>
                         <h2>Sign In</h2>

@@ -1,0 +1,58 @@
+
+.getDetalis {
+    padding: 20px;
+}
+
+.Eventcard {
+    padding: 20px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    background-color: #ffffff;
+    transition: transform 0.3s ease-in-out;
+}
+
+.Eventcard:hover {
+    transform: translateY(-5px);
+}
+
+.Eventcard img {
+    border-radius: 8px;
+    width: 100%;
+    height: auto;
+}
+
+.Eventcard h2 {
+    color: #333;
+    font-size: 24px;
+}
+
+.table.card {
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.bg-dark.text-white {
+    background-color: #343a40 !important;
+}
+
+.form-control {
+    border-radius: 5px;
+    padding: 8px;
+    font-size: 16px;
+}
+
+@media (max-width: 768px) {
+    .getDetalis .row {
+        flex-direction: column;
+    }
+    
+    .Eventcard {
+        margin-bottom: 20px;
+    }
+}

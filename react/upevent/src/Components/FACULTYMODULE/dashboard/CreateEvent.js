@@ -1,12 +1,9 @@
 import axios from "axios";
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import './CreateEvent.css'
-import { toast } from "react-toastify";
-//FOR GOOGLE CAPTCHA
-// import ReCAPTCHA from "react-google-recaptcha";
-
-function CreateEvent() {
+// import './CreateEvent.css'
+import { toast } from "react-toastify";import './Dashboard.css'
+function EventForm(){
     const navigate = useNavigate();
     
     
@@ -31,7 +28,8 @@ function CreateEvent() {
         formData.append("endDate", endDateRef.current.value);
         formData.append("location", locationRef.current.value);
         formData.append("image", image); // Append file
-    
+        console.log(formData);
+        
         try {
             const token = sessionStorage.getItem("token"); 
             
@@ -61,38 +59,49 @@ function CreateEvent() {
         }
     };
 
+    return (
+        <div className="eventForm">
+            <h1 className="heading">Create Event</h1>
+            <div className="col-md-8 mt-2 p-4">
+                <div className="card shadow p-4">
+                    <form onSubmit={RegisterEvent}>
+                        <div className="form-group">
+                            <label>Event Title</label>
+                            <input type="text" ref={titleRef} className="form-control" placeholder="Enter event title" required />
+                        </div>
 
-    return <>
-    <div className="container">
-    <div className="event-form">
-    <h1>CREATE EVENT NOW</h1>
-        <form onSubmit={RegisterEvent}>
-            <div className="form-group">
-                <input type="text"  className="form-control" ref={titleRef} placeholder="ENTER EVENT TITLE" required/>
+                        <div className="form-group">
+                            <label>Description</label>
+                            <textarea ref={descriptionRef} className="form-control" rows="2" placeholder="Describe your event..." required></textarea>
+                        </div>
+
+                        <div className="form-group">
+                            <label>Location</label>
+                            <select ref={locationRef} className="form-control" required>
+                                <option value="" disabled selected>Choose Location</option>
+                                <option value="INDORE">Indore</option>
+                                <option value="BHOPAL">Bhopal</option>
+                                <option value="DEWAS">Dewas</option>
+                                <option value="PITAMPUR">Pitampur</option>
+                            </select>
+                        </div>
+
+                        <div className="form-group">
+                            <label>End Date</label>
+                            <input type="date" ref={endDateRef} className="form-control" required />
+                        </div>
+
+                        <div className="form-group">
+                            <label>Upload Image</label>
+                            <input type="file" onChange={(e) => setFile(e.target.files[0])} className="form-control-file" required />
+                        </div>
+
+                        <button type="submit" className="btn">Create Event</button>
+                    </form>
+                </div>
             </div>
-            <div className="form-group">    
-                <textarea className="form-control" ref={descriptionRef} rows="1" placeholder="Describe your event..." required></textarea>
-            </div>
-            <div className="form-group">
-                <select className="form-control" ref={locationRef} required>
-                    <option value="" disabled selected>Choose Location</option>
-                    <option value="INDORE">Indore</option>
-                    <option value="BHOPAL">Bhopal</option>
-                    <option value="DEWAS">Dewas</option>
-                    <option value="PITAMPUR">Pitampur</option>
-                </select>
-            </div>
-            <div className="form-group">
-                <label id="eDATE">EndDate</label>
-                <input type="date" ref={endDateRef}  className="form-control" id="endDate" placeholder="EndDate" required/>
-            </div>
-            <div className="form-group">
-                <input type="file" onChange={(e)=>{ setFile(e.target.files[0]);}}  className="form-control" id="image"  required/>
-            </div>
-            <button type="submit" className="btn btn-primary btn-block">Create Event</button>
-        </form>
-    </div>
-</div>
-    </>
-}
-export default CreateEvent;
+        </div>
+    );
+};
+
+export default EventForm;

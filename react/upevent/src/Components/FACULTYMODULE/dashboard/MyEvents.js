@@ -1,0 +1,95 @@
+import axios from "axios";
+import { useEffect, useReducer } from "react";
+import { useNavigate } from "react-router-dom";
+import './Dashboard.css'
+function MyEvents(){
+    const navigate = useNavigate();
+
+
+    //USE REDUCER FOR THE PLACE OF STATE
+    const reducer = (state, action) => {
+        switch (action.type) {
+            case "setData":
+                return { ...state, AllEvent: action.payload };
+            default:
+                return state;
+        }
+    };
+    const [state, dispatch] = useReducer(reducer, {
+        AllEvent: [],
+    });
+
+    //CALL API FOR THE DATA
+    useEffect(() => {
+        fatchEvent()
+    }, [])
+    const fatchEvent = ()=>{
+        axios.get("http://localhost:3000/faculty/myEvents")
+        .then((res)=>{
+            dispatch({type:'setData' , payload: res.data.AllEvents})
+        })
+        .catch((err)=>{
+            console.log(err);
+            alert('SOMETHING WENT WROUNG')
+        })
+    };
+
+
+            //ON CLICK ANY ONE EVENT 
+    const handleClick = (id, event) => {
+        navigate(`/faculty-getDetalis/${id}`, { state: { eventData: event } });
+    }
+    return <>
+            <h1 className="heading">OWN CREATED EVENT</h1>
+            <div className="data-container">
+            <input type="text" className="form-control" id="search" placeholder="Search" />
+                <div className="upComingcontainer mt-4">
+                    <h1 className="midHeading">UPCOMING EVENT</h1>
+                    <div className="row">
+                        {state.AllEvent && state.AllEvent.length>0 ? (
+                            state.AllEvent.filter(event => new Date(event.endDate).getTime() >= Date.now()) // Filtering events based on end date
+                            .map((event, index) => (
+                                <div className="col-md-4 mb-4" key={index}>
+                                    <div className="card" onClick={() => handleClick(event.id, event)} style={{ cursor: "pointer" }}>
+                                        <img src={event.imagePath} className="card-img-top w-100" alt="Event Image" />
+                                        <div className="card-body">
+                                            <h5 className="card-title">{event.title}</h5>
+                                            <p className="text-danger">End Date: {event.endDate}</p>
+                                            <button className="btn btn-danger">READ MORE</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))
+                        ): (
+                                <h2 className="ml-5 text-center text-muted">No Events Available</h2>
+                        )}
+                    </div>
+
+                </div>
+                <h1 className="midHeading">RECENT END EVENT</h1>
+                <div className="endcontainer mt-4">
+                    <div className="row">
+                        {state.AllEvent && state.AllEvent.length>0? ( 
+                        state.AllEvent
+                            .filter(event => new Date(event.endDate).getTime() <= Date.now()) // Filtering events based on end date
+                            .map((event, index) => (
+                                <div className="col-md-4 mb-4" key={index}>
+                                    <div className="card" onClick={() => handleClick(event.id, event)} style={{ cursor: "pointer" }}>
+                                        <img src={event.imagePath} className="card-img-top w-100" alt="Event Image" />
+                                        <div className="card-body">
+                                            <h5 className="card-title">{event.title}</h5>
+                                            <p className="text-danger">End Date: {event.endDate}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))
+                        ):( 
+                            <h2 className="ml-5 text-center text-muted">No Events Available</h2>
+                        )}
+                    </div>
+
+                </div>
+            </div>
+    </>
+}
+export default MyEvents;

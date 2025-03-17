@@ -1,5 +1,6 @@
+
 body {
-  font-family: Arial, sans-serif;
+  /* font-family: ; */
   margin: 0;
   padding: 0;
   width: 100%;
@@ -36,10 +37,16 @@ body {
   transition: background-color 0.3s, transform 0.2s;
 }
 
-
+.sidebar ul li a{
+   color: #112D4E;
+  /* font-size: 0.9rem; */
+  white-space: nowrap;
+  width: 100%;
+}
 .sidebar ul li a:hover {
   border: none;
   outline: none;
+ color: #F9F7F7;
   text-decoration: none;
   color: none;
 }
@@ -48,6 +55,23 @@ body {
   background-color: #ddd;
   transform: scale(1.05);
 }
+.heading {
+  color: #112D4E;
+  margin-top: 2vh;
+  margin-left: 4vh;
+  border-bottom: 1.5px solid gray;
+  box-shadow: 4px 5px 5px -2px gray; 
+  font-size: 2.5rem;
+  font-weight: 500;
+}
+.midHeading{
+  color: #112D4E;
+  margin-left: 4vh;
+  margin-bottom: 4vh;
+  border-bottom: 1.5px solid gray;
+  font-size: 2.5rem;
+  font-weight: 300;
+}
 .content #img {
   height: 100px;
   width: 100%;
@@ -55,6 +79,7 @@ body {
 .sidebar button {
   margin-top: 20px;
   background-color: #ddd;
+  color: #112D4E;
   border: none;
   padding: 10px;
   cursor: pointer;
@@ -62,6 +87,7 @@ body {
 }
 
 .sidebar button:hover {
+  color: #F9F7F7;
   background-color: #ccc;
   transform: scale(1.05);
 }
@@ -70,24 +96,27 @@ body {
   height: auto;
 }
 .content {
+  background: linear-gradient(to right, #F9F7F7, #8ca5d4);
   height: 100vh;
   width: 100%;
-  padding: 20px;
+  overflow-y: hidden;
 }
-
-.content h1 {
-  margin-bottom: 20px;
+.upComingcontainer{
+  min-height: 80vh;
 }
-
+.endcontainer{
+  min-height: 50vh;
+}
 .data-container {
-  max-height: 75vh; 
+  max-height: 88vh; 
   width: 100%;
   overflow-x: hidden;
   overflow-y: auto; 
   display: block; 
 }
-.content input {
-  width: 100%;
+#search{
+  margin: 40px 0 0 40px;
+  width: 80%;
   padding: 10px;
   margin-bottom: 20px;
 }
@@ -97,21 +126,106 @@ body {
   cursor: pointer;
 }
 
+.eventForm .card{
+  background: linear-gradient(to right, #DBE2EF, #3F72AF);
+}
 
+
+/* STUDENT CREATE CARD */
+.CreateStudentContainer {
+  width: 100%;
+  max-width: 1500px;
+}
+
+.CreateStudentContainer .form-card {
+  background: #fff;
+  padding: 25px;
+  width: 80%;
+  margin: 50px 1px 1px 50px;
+  max-width: 400px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+
+label {
+  display: block;
+  font-weight: 600;
+  margin: 10px 0 5px;
+  text-align: left;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
+
+.btn {
+  background: #4b6cb7;
+  color: white;
+  border: none;
+  padding: 10px;
+  width: 100%;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 5px;
+}
+
+.btn:hover {
+  background: #3a5aa8;
+}
+
+.loader {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  animation: spin 1s linear infinite;
+  margin: 15px auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.result-box {
+  margin-top: 20px;
+  padding: 10px;
+  background: #f4f4f4;
+  border-radius: 5px;
+}
+
+.result-box p {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+/* --- */
 @media (max-width: 768px) {
   .container-fluid {
     flex-direction: column;
+    background: linear-gradient(-45deg, #F9F7F7, #8ca5d4);
   }
 
   .sidebar {
     display: none;
+    font-size: 0.6rem;
     position: fixed;
     width: 40%;
     height: 100%;
-    background-color: #f4f4f4;
+    background-color: #F9F7F7;
     z-index: 1000;
   }
-
+  .heading{
+    font-size: 1.5rem;
+    margin-left: 10px;
+  }
   .sidebar.active {
     display: block;
   }

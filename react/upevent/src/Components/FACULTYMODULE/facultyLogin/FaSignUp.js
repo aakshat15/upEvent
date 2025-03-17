@@ -44,17 +44,18 @@ function FaSignUp() {
             // alert("Sign-up Failed! Please try again.");     
             toast.error("Sign-up Failed")
         }finally {
-            setLoading(false); // Stop loading
+            setTimeout(() => {
+                setLoading(false)
+            }, 2500);
         }
         
     }
     return <>
     <div className="container">
-            <h2 id="heading">Faculty</h2>
             <div className="Innercontainer">
+            <h2 id="heading">FACULTY-SIGN-UP</h2>
                 <div className="form">
                     <form onSubmit={FaSignUp}>
-                        <h2>Sign Up</h2>
                         <div className="form-group">
                             <label htmlFor="name">Name</label>
                             <input type="text" className="form-control" ref={nameRef} placeholder="Enter your name" required />
