@@ -92,27 +92,40 @@ body {
   transform: scale(1.05);
 }
 
-.card{
-  height: auto;
-}
+
 .content {
-  background: linear-gradient(to right, #F9F7F7, #8ca5d4);
+  background: url('../../../assets/background.jpg') no-repeat center center/cover;
   height: 100vh;
   width: 100%;
   overflow-y: hidden;
+  position: relative;
 }
-.upComingcontainer{
-  min-height: 80vh;
+
+.content::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.2); /* Light overlay */
+  backdrop-filter: blur(5px); /* Apply blur effect */
+  z-index: 1;
 }
-.endcontainer{
-  min-height: 50vh;
-}
+
 .data-container {
   max-height: 88vh; 
   width: 100%;
   overflow-x: hidden;
   overflow-y: auto; 
   display: block; 
+  position: relative;
+  z-index: 2;
+}
+
+.heading, .midHeading , .CreateStudentContainer , .eventForm{
+  position: relative;
+  z-index: 2; /* Ensure content appears above the blur */
 }
 #search{
   margin: 40px 0 0 40px;
@@ -135,18 +148,29 @@ body {
 .CreateStudentContainer {
   width: 100%;
   max-width: 1500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .CreateStudentContainer .form-card {
-  background: #fff;
+  background: linear-gradient(to right, #DBE2EF, #3F72AF);
   padding: 25px;
   width: 80%;
-  margin: 50px 1px 1px 50px;
-  max-width: 400px;
+  margin-top: 50px;
+  max-width: 500px;
+  min-height: 400px;
   border-radius: 10px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
   text-align: center;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
+
+.CreateStudentContainer .form-card:hover {
+  transform: translateY(-8px) scale(1.03); /* Moves up & scales slightly */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3); /* Stronger shadow */
+}
+
 
 
 label {

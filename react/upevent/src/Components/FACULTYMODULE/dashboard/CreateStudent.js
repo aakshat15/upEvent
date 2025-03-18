@@ -1,50 +1,61 @@
 import { useState } from "react";
 import  './Dashboard.css'
+import axios from "axios";
+import { toast } from "react-toastify";
 export default function GenerateRollNumber() {
     const [email, setEmail] = useState("");
     const [rollNumber, setRollNumber] = useState(null);
     const [loading, setLoading] = useState(false);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async(e) => {
         e.preventDefault();
         setLoading(true);
-        
-        // Simulating roll number generation
-        setTimeout(() => {
-            const generatedRoll = "RN" + Math.floor(100000 + Math.random() * 900000);
-            setRollNumber(generatedRoll);
-            setLoading(false);
-        }, 2000);
+
+        await axios.post('http://localhost:3000/faculty/createStudent' , {email} )
+        .then((res) => {
+            console.log(res.data);
+            // Simulating roll number generation
+            setTimeout(() => {
+                setRollNumber(res.data.rollNumber);
+                toast.success(res.data.message)
+                setLoading(false);
+            }, 2000);
+        })
+        .catch((err) => {
+           toast.error("WROUNG CRADNTIALS")      
+        })
     };
 
-    return (
-        <div className="CreateStudentContainer">
+    return <>
             <h1 className="heading">Generate Student</h1>
-            <div className="form-card">
-                <h2>Generate Roll Number</h2>
-                <form onSubmit={handleSubmit}>
-                    <label>Email Address</label>
-                    <input 
-                        type="email" 
-                        placeholder="Enter your email" 
-                        value={email} 
-                        onChange={(e) => setEmail(e.target.value)} 
-                        required 
-                    />
-                    <button type="submit" className="btn">Generate</button>
-                </form>
-
-                {loading && <div className="loader"></div>}
-
-                {rollNumber && (
-                    <div className="result-box">
-                        <h3>Your Roll Number:</h3>
-                        <p>{rollNumber}</p>
-                    </div>
-                )}
+            <div className="CreateStudentContainer">
+                <div className="form-card">
+                    <h2>Generate Roll Number</h2>
+                    <form onSubmit={handleSubmit}>
+                        <label>Email Address</label>
+                        <input 
+                            type="email" 
+                            placeholder="Enter your email" 
+                            value={email} 
+                            onChange={(e) => setEmail(e.target.value)} 
+                            required 
+                        />
+                        <button type="submit" className="btn">Generate</button>
+                    </form>
+    
+                    {loading && <div className="loader"></div>}
+    
+                    {rollNumber && (
+                        <div className="result-box">
+                            <h3>Your Roll Number:</h3>
+                            <p>{rollNumber}</p>
+                        </div>
+                    )}
+                </div>
             </div>
-        </div>
-    );
+        </>
+
+    
 }
 
 

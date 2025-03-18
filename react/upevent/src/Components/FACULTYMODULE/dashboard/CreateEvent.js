@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import './CreateEvent.css'
+import './Dashboard.css'
 import { toast } from "react-toastify";import './Dashboard.css'
 function EventForm(){
     const navigate = useNavigate();

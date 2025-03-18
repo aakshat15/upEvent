@@ -52,15 +52,17 @@ function AllEvents() {
                             .filter(event => new Date(event.endDate).getTime() >= Date.now()) // Filtering events based on end date
                             .map((event, index) => (
                                 <div className="col-md-4 mb-4" key={index}>
-                                    <div className="card" onClick={() => handleClick(event.id, event)} style={{ cursor: "pointer" }}>
-                                        <img src={event.imagePath} className="card-img-top w-100" alt="Event Image" />
-                                        <div className="card-body">
-                                            <h5 className="card-title">{event.title}</h5>
-                                            <p className="text-danger">End Date: {event.endDate}</p>
-                                            <button className="btn btn-danger">READ MORE</button>
-                                        </div>
-                                    </div>
+                                <div
+                                  className="card event-card"
+                                  onClick={() => handleClick(event.id, event)}
+                                  style={{ backgroundImage: `url(${event.imagePath})` }}
+                                >
+                                  <div className="card-content">
+                                    <h5 className="card-title">{event.title}</h5>
+                                    <p className="card-date">Ends on: {event.endDate}</p>
+                                  </div>
                                 </div>
+                              </div>
                             ))
                         ): (
                                 <h2 className="ml-5 text-center text-muted">No Events Available</h2>
@@ -76,14 +78,18 @@ function AllEvents() {
                             .filter(event => new Date(event.endDate).getTime() <= Date.now()) // Filtering events based on end date
                             .map((event, index) => (
                                 <div className="col-md-4 mb-4" key={index}>
-                                    <div className="card" onClick={() => handleClick(event.id, event)} style={{ cursor: "pointer" }}>
-                                        <img src={event.imagePath} className="card-img-top w-100" alt="Event Image" />
-                                        <div className="card-body">
-                                            <h5 className="card-title">{event.title}</h5>
-                                            <p className="text-danger">End Date: {event.endDate}</p>
-                                        </div>
-                                    </div>
+                                <div
+                                  className="card event-card"
+                                  onClick={() => handleClick(event.id, event)}
+                                  style={{ backgroundImage: `url(${event.imagePath})` }}
+                                >
+                                  <div ></div>
+                                  <div className="card-content">
+                                    <h5 className="card-title">{event.title}</h5>
+                                    <p className="card-date">Ends on: {event.endDate}</p>
+                                  </div>
                                 </div>
+                              </div>
                             ))
                         ): (
                                 <h2 className="ml-5 text-center text-muted">No Events Available</h2>

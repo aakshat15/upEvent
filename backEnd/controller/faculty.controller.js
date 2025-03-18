@@ -135,7 +135,6 @@ export const createStudent = async (req, res, next) => {
         try {
             const rollNumber = `ROLL-${uuidv4().slice(0, 8)}`;
             const { email } = req.body;
-
             // Check if email exists in either student or faculty
             const userEmail = await student.findOne({ where: { email } });
             const userEmailInFaculty = await faculty.findOne({ where: { email } });
