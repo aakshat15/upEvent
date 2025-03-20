@@ -25,6 +25,9 @@
     color: #333;
     font-size: 24px;
 }
+.upComingcontainer{
+    max-height: 500px;
+}
 
 .table.card {
     padding: 20px;

@@ -14,7 +14,7 @@ function SignIn() {
 
     const emailRef = useRef();
     const passwordRef = useRef();
-    const[loading , setLoading] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const signIn = async (e) => {
         setLoading(true)
@@ -29,8 +29,8 @@ function SignIn() {
                 const token = res.data.token; // Extract token from response
 
                 const user = res.data.user;
-                
-                dispatch(loginSuccess({ token, user}));
+
+                dispatch(loginSuccess({ token, user }));
 
                 toast.success(res.data.Result || "Sign In ")
                 setTimeout(() => {
@@ -41,36 +41,37 @@ function SignIn() {
                 console.log(error.response);
                 setLoading(false)
                 toast.error(error.response.data.message || error.response.data.error.errors[0].msg)
-            }).finally(()=>{
+            }).finally(() => {
                 setTimeout(() => {
                     setLoading(false)
                 }, 2500);
             })
     }
-    return <>   
-        <div className="container">
-            <div className="Innercontainer">
-            <h2 id="heading">STUDENT SIGN IN</h2>
+    return <>
+        <div className="sign">
+            <div className="container">
                 <div className="form">
                     <form onSubmit={signIn}>
-                        <h2>Sign In</h2>
-                        <div className="form-group">
+                        <h1 className="text-center">Sign In Now</h1>
+                        <h6 className="text-center" style={{ color:"#3F72AF"}}>Please Enter your Detalis</h6>
+                        <div className="form-group mt-4">
                             <label for="email">Email</label>
                             <input type="email" className="form-control" ref={emailRef} placeholder="Enter your email" required />
                         </div>
                         <div className="form-group">
                             <label for="password">password</label>
-                            <input type="password" className="form-control" ref={passwordRef} placeholder="Enter your password" required />
-                            <span id="forget">forget password</span>
+                            <input type="password" className="form-control mb-0" ref={passwordRef} placeholder="Enter your password" required />
+                            <span id="forget">forget password?</span>
                         </div>
                         <button type="submit" className="btn btn-primary btn-block">
                             {loading ? "Signing Up..." : "Sign Up"}
-                    </button>
-                        <Link className="btn btn-block text-dark" to={'/student-signUp'}>CREATE ACCOUNT<span className="text-primary"> SignIn</span></Link>
+                        </button>
+                        <Link className="btn btn-block text-dark" id="minibtn" to={'/student-signUp'}>CREATE ACCOUNT<span className="text-primary"> SignIn</span></Link>
                     </form>
                 </div>
-                <div className="image">
-                    <img src={logo} alt="Logo" />
+                <div className="text">
+                    <h1 className="text-center">Welcome back</h1>
+                    <h5  className="text-center">You can sign in to access with your existing account</h5>
                 </div>
             </div>
         </div>

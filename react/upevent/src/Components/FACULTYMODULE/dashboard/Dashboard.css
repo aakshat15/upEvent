@@ -60,7 +60,7 @@ body {
   margin-top: 2vh;
   margin-left: 4vh;
   border-bottom: 1.5px solid gray;
-  box-shadow: 4px 5px 5px -2px gray; 
+  /* box-shadow: 4px 5px 5px -2px gray;  */
   font-size: 2.5rem;
   font-weight: 500;
 }
@@ -69,8 +69,8 @@ body {
   margin-left: 4vh;
   margin-bottom: 4vh;
   border-bottom: 1.5px solid gray;
-  font-size: 2.5rem;
-  font-weight: 300;
+  font-size: 1.5rem;
+  font-weight: 500;
 }
 .content #img {
   height: 100px;
@@ -128,10 +128,10 @@ body {
   z-index: 2; /* Ensure content appears above the blur */
 }
 #search{
-  margin: 40px 0 0 40px;
+  margin: 10px 0 0 40px;
   width: 80%;
   padding: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 .menu-icon {
   display: none;
@@ -145,6 +145,10 @@ body {
 
 
 /* STUDENT CREATE CARD */
+
+.upComingcontainer{
+  height: auto;
+}
 .CreateStudentContainer {
   width: 100%;
   max-width: 1500px;

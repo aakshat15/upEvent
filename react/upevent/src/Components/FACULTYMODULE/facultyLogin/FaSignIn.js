@@ -3,7 +3,7 @@ import { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { loginSuccess } from "../../auth/authSlice";
-import logo from "../../../assets/logo.png"
+import '../../STUDENTMODULE/studentLogin/SignIn.css'
 import { toast } from "react-toastify";
 
 function FaSignIn() {
@@ -68,29 +68,30 @@ function FaSignIn() {
         }
     }
     return <>
-        <div className="container">
-            <div className="Innercontainer">
-            <h2 id="heading">FACULTY SIGN-INN</h2>
+        <div className="sign">
+            <div className="container">
                 <div className="form">
                     <form onSubmit={FaSignIn}>
-                        <h2>Sign In</h2>
-                        <div className="form-group">
+                        <h1 className="text-center">Sign In Now</h1>
+                        <h6 className="text-center" style={{ color:"#3F72AF"}}>Please Enter your Detalis</h6>
+                        <div className="form-group mt-4">
                             <label for="email">Email</label>
                             <input type="email" className="form-control" ref={emailRef} placeholder="Enter your email" required />
                         </div>
                         <div className="form-group">
                             <label for="password">password</label>
-                            <input type="password" className="form-control" ref={passwordRef} placeholder="Enter your password" required />
-                            <span id="forget">forget password</span>
+                            <input type="password" className="form-control mb-0" ref={passwordRef} placeholder="Enter your password" required />
+                            <span id="forget">forget password?</span>
                         </div>
                         <button type="submit" className="btn btn-primary btn-block">
-                            {loading ? "Sign In..." : "SignIn Now"}
+                            {loading ? "Signing Up..." : "Sign Up"}
                         </button>
-                        <Link className="btn btn-block text-dark" to={'/faculty-signUp'}>CREATE ACCOUNT<span className="text-primary"> SignIn</span></Link>
+                        <Link className="btn btn-block text-dark" id="minibtn" to={'/faculty-signUp'}>CREATE ACCOUNT<span className="text-primary"> SignIn</span></Link>
                     </form>
                 </div>
-                <div className="image">
-                    <img src={logo} alt="Logo" />
+                <div className="text">
+                    <h1 className="text-center">Welcome back</h1>
+                    <h5  className="text-center">You can sign in to access with your existing account</h5>
                 </div>
             </div>
         </div>

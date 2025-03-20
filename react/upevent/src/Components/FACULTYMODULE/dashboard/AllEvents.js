@@ -5,100 +5,104 @@ import { useNavigate } from "react-router-dom";
 function AllEvents() {
     const navigate = useNavigate();
 
-
-    //USE REDUCER FOR THE PLACE OF STATE
+    // Reducer function
     const reducer = (state, action) => {
         switch (action.type) {
             case "setData":
-                return { ...state, AllEvent: action.payload };
+                const currentTime = Date.now();
+                return {
+                    ...state,
+                    upcomingEvents: action.payload.filter(event => new Date(event.endDate).getTime() >= currentTime),
+                    endedEvents: action.payload.filter(event => new Date(event.endDate).getTime() < currentTime),
+                };
             default:
                 return state;
         }
     };
+
+    // state
     const [state, dispatch] = useReducer(reducer, {
-        AllEvent: [],
+        upcomingEvents: [],
+        endedEvents: [],
     });
 
-    //CALL API FOR THE DATA
+    // Fetch events
     useEffect(() => {
-        fatchEvent()
-    }, [])
-    const fatchEvent = ()=>{
-        axios.get("http://localhost:3000/faculty/allEvents")
-        .then((res)=>{
-            // console.log(res.data.AllEvents);
-            dispatch({type:'setData' , payload: res.data.AllEvents})
-        })
-        .catch((err)=>{
-            console.log(err);
-            alert('SOMETHING WENT WROUNG')
-        })
+        fetchEvents();
+    }, []);
 
-    }
+    const fetchEvents = async () => {
+        try {
+            const res = await axios.get("http://localhost:3000/faculty/allEvents");
+            dispatch({ type: "setData", payload: res.data.AllEvents });
+        } catch (error) {
+            console.error(error);
+            alert("Something went wrong while fetching events");
+        }
+    };
 
-    //ON CLICK ANY ONE EVENT 
+    // Handle event click
     const handleClick = (id, event) => {
         navigate(`/faculty-getDetalis/${id}`, { state: { eventData: event } });
     };
-    return <>
+
+    return (
+        <>
             <h1 className="heading">FACULTY DASHBOARD</h1>
             <div className="data-container">
-            <input type="text" className="form-control" id="search" placeholder="Search" />
+                <input type="text" className="form-control" id="search" placeholder="Search" />      
+                {/* Upcoming Events */}
                 <div className="upComingcontainer">
-                    <h1 className="midHeading" >UPCOMING EVENT</h1>
+                    <h3 className="midHeading text-center">UPCOMING EVENTS</h3>
                     <div className="row">
-                    {state.AllEvent && state.AllEvent.length > 0 ? (
-                        state.AllEvent
-                            .filter(event => new Date(event.endDate).getTime() >= Date.now()) // Filtering events based on end date
-                            .map((event, index) => (
+                        {state.upcomingEvents.length > 0 ? (
+                            state.upcomingEvents.map((event, index) => (
                                 <div className="col-md-4 mb-4" key={index}>
-                                <div
-                                  className="card event-card"
-                                  onClick={() => handleClick(event.id, event)}
-                                  style={{ backgroundImage: `url(${event.imagePath})` }}
-                                >
-                                  <div className="card-content">
-                                    <h5 className="card-title">{event.title}</h5>
-                                    <p className="card-date">Ends on: {event.endDate}</p>
-                                  </div>
+                                    <div 
+                                        className="card event-card" 
+                                        onClick={() => handleClick(event.id, event)} 
+                                        style={{ backgroundImage: `url(${event.imagePath})` }}
+                                    >
+                                        <div className="card-content">
+                                            <h5 className="card-title">{event.title}</h5>
+                                            <p className="card-date">Ends on: {event.endDate}</p>
+                                        </div>
+                                    </div>
                                 </div>
-                              </div>
                             ))
-                        ): (
-                                <h2 className="ml-5 text-center text-muted">No Events Available</h2>
+                        ) : (
+                            <h2 className="ml-5 text-center text-muted ">No Upcoming Events Available</h2>
                         )}
                     </div>
-
                 </div>
-                <h1 className="midHeading">RECENT END EVENT</h1>
+
+                {/* Ended Events */}
+                <h3 className="midHeading text-center">RECENT ENDED EVENTS</h3>
                 <div className="endcontainer mt-4">
                     <div className="row">
-                        {state.AllEvent && state.AllEvent.length > 0 ? (
-                        state.AllEvent
-                            .filter(event => new Date(event.endDate).getTime() <= Date.now()) // Filtering events based on end date
-                            .map((event, index) => (
+                        {state.endedEvents.length > 0 ? (
+                            state.endedEvents.map((event, index) => (
                                 <div className="col-md-4 mb-4" key={index}>
-                                <div
-                                  className="card event-card"
-                                  onClick={() => handleClick(event.id, event)}
-                                  style={{ backgroundImage: `url(${event.imagePath})` }}
-                                >
-                                  <div ></div>
-                                  <div className="card-content">
-                                    <h5 className="card-title">{event.title}</h5>
-                                    <p className="card-date">Ends on: {event.endDate}</p>
-                                  </div>
+                                    <div 
+                                        className="card event-card" 
+                                        onClick={() => handleClick(event.id, event)} 
+                                        style={{ backgroundImage: `url(${event.imagePath})` }}
+                                    >
+                                        <div className="card-content">
+                                            <h5 className="card-title">{event.title}</h5>
+                                            <p className="card-date">Ended on: {event.endDate}</p>
+                                        </div>
+                                    </div>
                                 </div>
-                              </div>
                             ))
-                        ): (
-                                <h2 className="ml-5 text-center text-muted">No Events Available</h2>
+                        ) : (
+                            <h2 className="ml-5 text-center text-muted">No Ended Events Available</h2>
                         )}
                     </div>
-
                 </div>
             </div>
-    </>
+        </>
+    );
 }
 
 export default AllEvents;
