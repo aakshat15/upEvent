@@ -1,5 +1,6 @@
 /* Apply background image */
 body {
+    font-family: Poppins;
     background: url('../../assets/background.jpg') no-repeat center center/cover;
     display: flex;
     justify-content: center; /* Align to left */
@@ -10,13 +11,16 @@ body {
 }
 
 /* Hero container styles - Glassmorphism Effect */
-#main.main {
+.container.main {
+    box-shadow: none;
+    display: flex;
+    flex-direction: column;
     margin-top: 150px;
     max-width: 480px;
     max-height: 500px;
     padding: 2rem;
     border-radius: 12px;
-    color: #112D4E;
+    background: none;
     margin-left: 5%;
 }
 #btn {

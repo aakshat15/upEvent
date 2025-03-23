@@ -5,8 +5,14 @@ import AllEvents from "./AllEvents";
 import MyEvents from "./MyEvents";
 import CreateEvent from "./CreateEvent";
 import CreateStudent from "./CreateStudent";
+import { useDispatch } from "react-redux";
+import { logOut } from "../../auth/authSlice";
 
 function FacultyDashBoard() {
+    //HOOKS
+    const dispatch = useDispatch();
+
+    //STATES
     const[activeComponent , setActiveComponent] = useState('allEvents');
 
     // BURGER FUNCTION
@@ -28,6 +34,14 @@ function FacultyDashBoard() {
         document.addEventListener('click', handleOutsideClick);
     }, []);
 
+    const signOut = () => {
+        const confirmLogout = window.confirm("Are you sure you want to sign out?");
+        if (confirmLogout) {
+            dispatch(logOut())
+        } else {
+            console.log("Sign-out canceled");
+        }
+    };
     return (
         <>
             <div className="dashboard">
@@ -49,7 +63,7 @@ function FacultyDashBoard() {
                                 <Link onClick={()=> setActiveComponent('myEvents')}>OWN CREATED EVENTS</Link>
                             </li>
                         </ul>
-                        <button className="btn btn-primary">Sign out</button>
+                        <button className="btn btn-primary" onClick={signOut}>Sign out</button>
                     </div>
 
 

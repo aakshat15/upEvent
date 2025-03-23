@@ -22,7 +22,7 @@ const transport = nodemailer.createTransport({
 
 
 export const createFaculty = async (req, res, next) => {
-
+    
 
     let errors = validationResult(req);
 
@@ -49,13 +49,33 @@ export const createFaculty = async (req, res, next) => {
 
                 const verificationLink = `http://localhost:3000/api/verifyFaculty/${token}`
                 const mailOptions = {
-                    from: `"EVENT MANEGMENT" <${process.env.EMAIL_USER}>`,
+                    from: `"UpEvent | Event Management" <${process.env.EMAIL_USER}>`,
                     to: email,
-                    subject: "VERIFY YOUR EMAIL ",
-                    html: `<p>Click the link below to verify your email for faculty</p>
-                    <a href="${verificationLink}">${verificationLink}</a>`,
-                }
-
+                    subject: "Verify Your Email for UpEvent Registration",
+                    html: `
+                        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
+                            <h2 style="color: #2c3e50; text-align: center;">Verify Your Email</h2>
+                            <p style="font-size: 16px; color: #444;">Hello,</p>
+                            <p style="font-size: 16px; color: #444;">
+                                Thank you for registering for <strong>UpEvent</strong>. To complete your registration, please verify your email by clicking the button below.
+                            </p>
+                            <div style="text-align: center; margin: 20px 0;">
+                                <a href="${verificationLink}" 
+                                   style="background-color: #3498db; color: #fff; padding: 12px 20px; text-decoration: none; font-size: 16px; border-radius: 5px; display: inline-block;">
+                                   Verify Email
+                                </a>
+                            </div>
+                            <p style="font-size: 14px; color: #888;">
+                                If the button above doesn’t work, you can also verify your email by clicking the following link:
+                            </p>
+                            <p style="word-wrap: break-word; font-size: 14px; color: #3498db;">
+                                <a href="${verificationLink}" style="color: #3498db;">${verificationLink}</a>
+                            </p>
+                            <p style="font-size: 14px; color: #888;">If you did not request this, please ignore this email.</p>
+                            <p style="font-size: 14px; color: #888; text-align: center;">&copy; ${new Date().getFullYear()} UpEvent. All rights reserved.</p>
+                        </div>
+                    `,
+                };
                 await transport.sendMail(mailOptions);
 
                 // from null UPdate faculty in Detalis table
@@ -192,10 +212,10 @@ export const createEvent = async (req, res, next) => {
             // Decode token to get faculty ID
             const decoded = jwt.verify(token, process.env.JWT_KEY);
             const createdByfaculty = decoded.id; // Extracting faculty ID from token
-            
+
             let existingEvent = await event.findOne({ where: { title, endDate } });
             // console.log(existingEvent);
-            
+
             if (existingEvent) {
                 fs.unlink(filePath, (err) => {
                     if (err) {
@@ -207,7 +227,7 @@ export const createEvent = async (req, res, next) => {
                 return res.status(400).json({ message: `Event already exists: ${title}` });
             }
 
-            
+
             // Create a new event
             const newEvent = await event.create({ title, description, endDate, location, createdByfaculty, imagePath, });
 

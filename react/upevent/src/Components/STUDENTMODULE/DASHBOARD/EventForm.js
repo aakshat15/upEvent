@@ -1,42 +1,50 @@
 import axios from "axios";
-import { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
-import './EventForm.css';
+import { useEffect, useState } from "react";
+import { useLocation, useParams } from "react-router-dom";
+import "./EventForm.css";
 import { useSelector } from "react-redux";
 
 function EventForm() {
     const { id } = useParams();
-    const emailRef = useRef();
-    const nameRef = useRef();
-    const [EventDetalis, setEventDetalis] = useState('');
+    const location = useLocation();
+    const activeTab = location.state?.activeTab;
+    console.log(activeTab);
+
+    const [eventDetails, setEventDetails] = useState({});
     let user = useSelector((state) => state.auth.user);
-    user = JSON.parse(user);
+    // user = JSON.parse(user);
+    const [timeLeft, setTimeLeft] = useState(null);
+
 
     const [step, setStep] = useState(0);
     const [showSubmitButton, setShowSubmitButton] = useState(false);
-    const [userData, setUserData] = useState({ name: user.name, email: user.email, branch: '', number: '' });
-
     const branches = ["Computer Science", "Mechanical", "Civil", "Electrical", "Electronics"];
-
+    const [userData, setUserData] = useState({ name: user.name, email: user.email, branch: '', number: '' });
     useEffect(() => {
+        displayMessage(`Hello ${user.name}! Welcome to the registration chatbot. Please Enter Your Age`, "bot");
         const fetchData = async () => {
             try {
                 const response = await axios.get(`http://localhost:3000/student/event/${id}`);
-                setEventDetalis(response.data.Event);
+                console.log(response.data.Event);
+                setEventDetails(response.data.Event);
+                const targetDate = new Date(response.data.Event.endDate).getTime();
+                setTimeLeft(targetDate - Date.now());
             } catch (error) {
                 console.error(error);
-                alert("Error occurred while fetching event details.");
+                alert("Error fetching event details.");
             }
         };
         fetchData();
     }, [id]);
 
+
+    //FOR THE CHATS
     const displayMessage = (message, sender) => {
         const chatBox = document.getElementById("chatBox");
         if (!chatBox) return;
         const newMessage = document.createElement("div");
         newMessage.className = "message";
-        newMessage.innerText = (sender === "bot" ? "# bot: " : "? you: ") + message;
+        newMessage.innerText = (sender === "bot" ? "🤖 bot: " : "🙍🏻‍♂️ you: ") + message;
         chatBox.appendChild(newMessage);
         chatBox.scrollTop = chatBox.scrollHeight;
     };
@@ -95,37 +103,98 @@ function EventForm() {
         displayMessage(`Hello ${user.name}! Welcome to the registration chatbot. Please Enter Your Age`, "bot");
     };
 
-    useEffect(() => {
-        displayMessage(`Hello ${user.name}! Welcome to the registration chatbot. Please Enter Your Age`, "bot");
-    }, []);
 
+
+
+
+    //FOR THE COUNTER
+    useEffect(() => {
+        if (timeLeft !== null) {
+            const interval = setInterval(() => {
+                setTimeLeft((prevTime) => prevTime - 1000);
+            }, 1000);
+            return () => clearInterval(interval);
+        }
+    }, [timeLeft]);
+
+
+    const getTimeComponents = (milliseconds) => {
+        if (milliseconds <= 0) return { days: 0, hours: 0, minutes: 0, seconds: 0 };
+        const seconds = Math.floor((milliseconds / 1000) % 60);
+        const minutes = Math.floor((milliseconds / 1000 / 60) % 60);
+        const hours = Math.floor((milliseconds / (1000 * 60 * 60)) % 24);
+        const days = Math.floor(milliseconds / (1000 * 60 * 60 * 24));
+        return { days, hours, minutes, seconds };
+    };
+
+    const { days, hours, minutes, seconds } = getTimeComponents(timeLeft);
+    //for the detalis of date in event
+    const options = { month: 'short', day: 'numeric', year: 'numeric' };
     return (
         <div className="EventForm">
-            <div className="container mt-2">
-                <div
-                    className="event-details"
-                    style={{ backgroundImage: `url(${EventDetalis.imagePath})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}
-                >
-                    <h1 className="titleheading">{EventDetalis.title}</h1>
-                    <p className="description">{EventDetalis.description}</p>
-                    <h3>{EventDetalis.endDate}</h3>
-                </div>
+            <div className="event-banner" style={{ background: `url(${eventDetails.imagePath}) center/cover no-repeat` }}>
+                <div className="overlay"></div>
+                <div className="Eventcontent">
+                    <h4>{new Date(eventDetails.endDate).toLocaleDateString('en-US', options)}- {eventDetails.location}</h4>
+                    <h1>{eventDetails.title}</h1>
 
-                <div className="chat-section">
+                    {/* IF UPCOMING ONLY */}
+                    {activeTab==='upcoming' && (       
+                        <a className="btn" onClick={() => document.getElementById("chat-section").scrollIntoView({ behavior: 'smooth' })}>
+                        Register Now
+                    </a>
+                    )}
+                    {activeTab==='past' && (
+                    <h4 className="text-light bg-danger text-center">ENDED</h4>
+                    )}
+                    {activeTab==='registered' && (
+                    <h4 className="text-light bg-success text-center">REGISTERED</h4>
+                    )}
+                </div>
+            </div>
+            <h2 className="heading">Event Countdown</h2>
+            <div className="countdown-container">
+                <div className="countdown-box">
+                    <span id="days">{days}</span>
+                    <div className="countdown-label">Days</div>
+                </div>
+                <div className="countdown-box">
+                    <span id="hours">{hours}</span>
+                    <div className="countdown-label">Hours</div>
+                </div>
+                <div className="countdown-box">
+                    <span id="minutes">{minutes}</span>
+                    <div className="countdown-label">Minutes</div>
+                </div>
+                <div className="countdown-box">
+                    <span id="secounds">{seconds}</span>
+                    <div className="countdown-label">seconds</div>
+                </div>
+            </div>
+            {/* Description */}
+            <div class="event-description-container">
+                <div class="event-text">
+                    <h1 className="heading">Event Description</h1>
+                    <p>{eventDetails.description}</p>
+                </div>
+            </div>
+            {activeTab === 'upcoming' && (
+                <div className="chat-section" id="chat-section">
+                    <h1 className="heading">Chat With Event Assistant</h1>
                     <div className="chat-box" id="chatBox"></div>
                     <div className="chat-input">
                         <input type="text" id="userInput" placeholder="Type your message..." />
-                        <button onClick={sendResponse}>Send</button>
+                        <button className="send-btn" onClick={sendResponse}>Send</button>
                     </div>
-                </div>
 
-                {showSubmitButton && (
-                    <div className="submit-section">
-                        <button className="submit-button" onClick={submitDetails}>Submit Details</button>
-                        <button className="reset-button" onClick={resetForm}>Re-enter Details</button>
-                    </div>
-                )}
-            </div>
+                    {showSubmitButton && (
+                        <div className="submit-section">
+                            <button className="submit-btn" onClick={submitDetails}>Submit Details</button>
+                            <button className="reenter-btn" onClick={resetForm}>Re-enter Details</button>
+                        </div>
+                    )}
+                </div>
+            )}
         </div>
     );
 }

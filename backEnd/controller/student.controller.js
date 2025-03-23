@@ -19,14 +19,16 @@ const transport = nodemailer.createTransport({
 
 export const signUp = async (req, res, next) => {
     
+    // console.log(req.body);
+    
     // Check validation errors
     const errors = validationResult(req);
     if (errors.isEmpty()) {
     try {
-        const { rollNumber, name, email, password } = req.body;
+        const {  name, email, password } = req.body;
         
         // Check if user with the given rollNumber exists
-        let user = await student.findOne({ where: { rollNumber , email } });
+        let user = await student.findOne({ where: {  email } });
 
         if (!user) {
             // If no user is found with the provided roll number, return an error
@@ -41,26 +43,48 @@ export const signUp = async (req, res, next) => {
             const hashedPassword = await bcrypt.hash(password, saltKey);
 
             // Generate a unique JWT token for email verification
-            const token = jwt.sign({ email }, process.env.JWT_KEY, { expiresIn: '1h' }); // Token expiration added for security
+            const token = jwt.sign({ email }, process.env.JWT_KEY); // Token expiration added for security
 
             const verificationLink = `http://localhost:3000/api/verifyStudent/${token}`;
             
             // Email options to send verification email
             const mailOptions = {
-                from: `"EVENT MANAGEMENT" <${process.env.EMAIL_USER}>`,
+                from: `"UpEvent | Event Management" <${process.env.EMAIL_USER}>`,
                 to: email,
-                subject: "VERIFY YOUR EMAIL",
-                html: `<p>Click the link below to verify your email for the student registration process:</p>
-                       <a href="${verificationLink}">${verificationLink}</a>`,
+                subject: "Verify Your Email for UpEvent Registration",
+                html: `
+                    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
+                        <h2 style="color: #2c3e50; text-align: center;">Verify Your Email</h2>
+                        <p style="font-size: 16px; color: #444;">Hello,</p>
+                        <p style="font-size: 16px; color: #444;">
+                            Thank you for registering for <strong>UpEvent</strong>. To complete your registration, please verify your email by clicking the button below.
+                        </p>
+                        <div style="text-align: center; margin: 20px 0;">
+                            <a href="${verificationLink}" 
+                               style="background-color: #3498db; color: #fff; padding: 12px 20px; text-decoration: none; font-size: 16px; border-radius: 5px; display: inline-block;">
+                               Verify Email
+                            </a>
+                        </div>
+                        <p style="font-size: 14px; color: #888;">
+                            If the button above doesn’t work, you can also verify your email by clicking the following link:
+                        </p>
+                        <p style="word-wrap: break-word; font-size: 14px; color: #3498db;">
+                            <a href="${verificationLink}" style="color: #3498db;">${verificationLink}</a>
+                        </p>
+                        <p style="font-size: 14px; color: #888;">If you did not request this, please ignore this email.</p>
+                        <p style="font-size: 14px; color: #888; text-align: center;">&copy; ${new Date().getFullYear()} UpEvent. All rights reserved.</p>
+                    </div>
+                `,
             };
+            
 
             // Send the verification email
             await transport.sendMail(mailOptions);
 
             // Update the user record with the new details (name, email, hashed password, and unverified status)
             await student.update(
-                { name, email, password: hashedPassword, isVerified: "false" , },  // Assuming 'isVerified' is a boolean
-                { where: { rollNumber } }
+                { name,  password: hashedPassword, isVerified: "false" , },  // Assuming 'isVerified' is a boolean
+                { where: { email } }
             );
 
             return res.status(200).json({ result: `STUDENT CREATED: ${email}` , message:"check you email and verify it" });
@@ -157,6 +181,24 @@ export const dashboard = async (req, res, next) => {
     }
 }
 
+// export const insertRollNumber = async (req, res , next) => {
+//     const {rollNumber , email} = req.body;
+//     try{
+
+//         const user = await student.update({  where : {email}});
+//         if(!user){
+//             return res.status(404).json({message : 'User not Found'})
+//         }
+//         console.log(user);
+        
+//         return res.status(200).json({result:'SuccessFull Updated'});
+//     }
+//     catch(error){
+//         return res.status(500).json({message : `Server Error${error}`})
+//     }
+
+// }
+
 export const Oneevent = async (req, res, next) => {
 
     try {
@@ -192,12 +234,6 @@ export const eventRegister = async (req, res, next) => {
             const decoded = jwt.verify(token, process.env.JWT_KEY);
 
             const rollNumber = decoded.id; // Extracting faculty ID from token
-
-
-            // let existingRegistrations = await EventRegistration.findOne({ where: { studentName, eventId } });
-            // if (existingRegistrations) {
-            //     return res.status(400).json({ result: 'ALREADY REGISTERED' });
-            // }
 
 
             let event = await EventRegistration.create({ name, email , branch , number, eventId, rollNumber })

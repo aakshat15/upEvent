@@ -1,5 +1,5 @@
 import express from "express";
-import { signUp , signInn , dashboard , Oneevent , eventRegister} from "../controller/student.controller.js" 
+import { signUp , signInn , dashboard , Oneevent , eventRegister    } from "../controller/student.controller.js" 
 import { verifyToken } from "../Middleware/auth.middleware.js";
 import { body } from "express-validator";
 
@@ -11,7 +11,7 @@ studentRouter.post("/student-signUp" ,
         body("email", "valid Email Enter").isEmail(),  //IS EMAIL OR NOT
         body("email", "please enter Email").notEmpty(), // EMAIL EMPTY CHECK
         body("password", "Please enter password").notEmpty(),   //PASSWORD EMPTY CHECK
-        body("password", " min:2 or max : 10 char in password").isLength({ min: 2, max: 10 }), //LENGTH OF PASSWORD
+        body("password", " min:2 or max : 30 char in password").isLength({ min: 2, max: 30 }), //LENGTH OF PASSWORD
         body("name", "Please Enter name").notEmpty()
     , signUp);
 
@@ -21,6 +21,7 @@ studentRouter.post("/student-signInn" , signInn);
 // // DASHBOARD
 studentRouter.get("/student-dashBoard" , verifyToken , dashboard);
 
+// studentRouter.post('/studentRollNumber' , insertRollNumber);
 //  EVENT
 studentRouter.get("/event/:eventId" , verifyToken , Oneevent)
 

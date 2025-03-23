@@ -18,7 +18,7 @@ facultyRouter.post("/faculty-signUp",
 
 facultyRouter.post("/faculty-signInn",
     body("email", "PLASE ENTER VALID EMAIL").notEmpty().isEmail(),
-    body("password", "PLEASE ENTER THE PASSWORD").notEmpty().isLength({min : 2 , max : 10})
+    body("password", "PLEASE ENTER THE PASSWORD").notEmpty()
     , facultySignInn);
 
 

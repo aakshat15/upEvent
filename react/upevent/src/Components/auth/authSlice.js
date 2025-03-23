@@ -12,9 +12,10 @@ const authSlice = createSlice({
 
         loginSuccess: (state, action) => {
             state.token = action.payload.token;
+            
             state.user = { ...action.payload.user };
             delete state.user.password;
-
+                    
             state.isAuthenticated = true;
 
             sessionStorage.setItem("token", action.payload.token);

@@ -1,24 +1,117 @@
-body {
+.studentDashboard {
+  background: url('../../../assets/background.jpg') no-repeat center center/cover;
+  height: 100vh;
   width: 100%;
-  font-family: 'Poppins', sans-serif;
-  background-color: #f8f9fa;
-  color: #222;
-  margin: 0;
-  padding: 0;
-  line-height: 1.6;
+  overflow-y: hidden;
+  position: relative;
 }
 
-/* Navbar */
-.studentDeshboard .navbar {
-  border-radius: 8px;
-  background: white;
-  box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.1);
+.studentDashboard::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.2); /* Light overlay */
+  backdrop-filter: blur(5px); /* Apply blur effect */
+  z-index: 1;
+}
+  
+.containt{
+  position: relative;
+  z-index: 2; /* Ensure content appears above the blur */
+}
+#navbar{
+  background:linear-gradient(155deg, #DBE2EF, #d7e9ff);
+  border-radius: 12px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.12);
+  transition: all 0.3s ease-in-out;
+}
+/* Logo and Branding */
+.navbar-brand {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 12px 24px;
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+  transition: color 0.3s ease;
 }
 
+.navbar-brand img {
+  height: 40px;
+  margin-right: 8px;
+}
+
+.navbar-brand:hover {
+  color: #007bff;
+}
+
+/* Navbar Links */
+.navbar-nav .nav-link {
+  font-size: 16px;
+  font-weight: 600;
+  color: #112D4E;
+  padding: 10px 16px;
+  transition: all 0.3s ease-in-out;
+  border-radius: 8px;
+  position: relative;
+}
+
+/* Active or Selected Link */
+.navbar-nav .nav-link.selected {
+  background:  #3F72AF;
+  color: #ffffff;
+  border: 2px solid #007bff; /* Adds blue border to selected tab */
+  outline: none;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active {
+  background:  #3F72AF;
+  color: #ffffff;
+}
+
+/* Navbar Toggler */
+.navbar-toggler {
+  border: none;
+  outline: none;
+  box-shadow: none;
+}
+
+.navbar-toggler:focus {
+  box-shadow: none;
+}
+#signOut{
+  margin-top: 20px;
+  background-color: #ddd;
+  color: #112D4E;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+#signOut{
+  color: #F9F7F7;
+  background-color: #ccc;
+  transform: scale(1.05);
+}
+
+/* Mobile Responsive */
+@media (max-width: 991px) {
+  .navbar {
+    padding: 12px 18px;
+  }
+  .navbar-nav {
+    margin-top: 12px;
+    text-align: center;
+  }
+  .navbar-nav .nav-link {
+    display: block;
+    padding: 12px;
+  }
+}
 .navbar-brand img {
   border-radius: 50%;
   width: 45px;
@@ -33,7 +126,6 @@ body {
   color: black;
   text-align: center;
   font-size: 2rem;
-  /* background: linear-gradient(135deg, #ffffff, #f8f9fa); */
 }
 
 .row {
@@ -109,22 +201,3 @@ body {
   box-shadow: 0px 4px 10px rgba(220, 53, 69, 0.3);
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .navbar {
-    flex-direction: row;
-    text-align: center;
-    gap: 12px;
-    padding: 16px;
-  }
-
-  .navbar .btn-primary {
-    margin-top: 10px;
-    width: 100%;
-  }
-
-  .card img {
-    height: auto;
-    max-height: 180px;
-  }
-}

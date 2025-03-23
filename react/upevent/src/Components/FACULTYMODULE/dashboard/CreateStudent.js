@@ -1,32 +1,62 @@
 import { useState } from "react";
-import  './Dashboard.css'
+import './Dashboard.css';
 import axios from "axios";
 import { toast } from "react-toastify";
+
 export default function GenerateRollNumber() {
     const [email, setEmail] = useState("");
     const [rollNumber, setRollNumber] = useState(null);
     const [loading, setLoading] = useState(false);
 
-    const handleSubmit = async(e) => {
+
+    // Verify email using MailboxLayer API
+    // const verifyEmailAPI = async (email) => {
+    //     const apiKey = '895bb6c46fb2542fa91908971e52b3c8'; // Replace with your API key
+    //     const url = `http://apilayer.net/api/check?access_key=${apiKey}&email=${email}`;
+
+    //     try {
+    //         const response = await axios.get(url);
+    //         console.log("MailboxLayer Response:", response.data);
+            
+    //         // Check if email is valid and not disposable
+    //         return response.data.format_valid && response.data.smtp_check && !response.data.disposable;
+    //     } catch (error) {
+    //         console.error("Error verifying email:", error);
+    //         return false;
+    //     }
+    // };
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
+
+
         setLoading(true);
 
-        await axios.post('http://localhost:3000/faculty/createStudent' , {email} )
-        .then((res) => {
-            console.log(res.data);
-            // Simulating roll number generation
+        // Verify email using MailboxLayer
+        // const isVerified = await verifyEmailAPI(email);
+        // if (!isVerified) {
+        //     toast.error("Invalid or non-existent email!");
+        //     setLoading(false);
+        //     return;
+        // }
+
+        // Proceed with API call if email is verified
+        try {
+            const res = await axios.post('http://localhost:3000/faculty/createStudent', { email });
+
             setTimeout(() => {
                 setRollNumber(res.data.rollNumber);
-                toast.success(res.data.message)
+                toast.success(res.data.message);
                 setLoading(false);
             }, 2000);
-        })
-        .catch((err) => {
-           toast.error("WROUNG CRADNTIALS")      
-        })
+        } catch (err) {
+            toast.error("WRONG CREDENTIALS");
+            setLoading(false);
+        }
     };
 
-    return <>
+    return (
+        <>
             <h1 className="heading">Generate Student</h1>
             <div className="CreateStudentContainer">
                 <div className="form-card">
@@ -34,17 +64,15 @@ export default function GenerateRollNumber() {
                     <form onSubmit={handleSubmit}>
                         <label>Email Address</label>
                         <input 
-                            type="email" 
-                            placeholder="Enter your email" 
+                            placeholder="Enter your Gmail" 
                             value={email} 
                             onChange={(e) => setEmail(e.target.value)} 
-                            required 
                         />
                         <button type="submit" className="btn">Generate</button>
                     </form>
-    
+
                     {loading && <div className="loader"></div>}
-    
+
                     {rollNumber && (
                         <div className="result-box">
                             <h3>Your Roll Number:</h3>
@@ -54,78 +82,5 @@ export default function GenerateRollNumber() {
                 </div>
             </div>
         </>
-
-    
+    );
 }
-
-
-// import axios from "axios";
-// import { useReducer, useState } from "react";
-// import { toast } from "react-toastify";
-// import './CreateStudent.css';
-// function CreateStudent() {
-
-//     const [state, dispatch] = useReducer(reducer, {
-//         email: "",
-//         rollNumber: ""
-//     });
-//     const [loading, setLoading] = useState(false);
-
-//     //USEREDUCER FUNCTION
-//     function reducer(state, action) {
-//         if (action.type === "setEmail") {
-//             return { ...state, email: action.payload }
-//         }
-//         else if (action.type === "setRollNumber") {
-//             return { ...state, rollNumber: action.payload }
-//         }
-//         return state;
-//     }
-
-//     const createStudent = async (e) => {
-//         e.preventDefault();
-//         setLoading(true);
-
-//         const email = state.email;
-//         await axios.post("http://localhost:3000/faculty/createStudent", { email })
-//             .then((response) => {
-//                 const rollNumber = response.data.rollNumber;
-//                 setTimeout(() => {
-//                     dispatch({ type: "setRollNumber", payload: rollNumber });
-//                     setLoading(false);
-//                     toast.success(response.data.message);
-//                 }, 2000);
-//             })
-//             .catch((error) => {
-//                 console.log(error);
-//                     dispatch({ type: "setRollNumber", payload: "" });
-//                     setLoading(false);
-//                     toast.error( "BAD REQUEST" || error.response.data.message );
-//             })
-//     }
-
-//     return (
-//         <div className="container" id="CreateStudent" >
-//         <h1>Create Student</h1>
-//         <form className="form" onSubmit={createStudent}>
-//             <input className="form-group"
-//                 type="email" 
-//                 onChange={(e) => dispatch({ type: "setEmail", payload: e.target.value })} 
-//                 placeholder="Enter student Email" 
-//             />
-//             <button className="btn btn-primary btn-block"
-//                 type="submit" 
-//                 disabled={loading  || !state.email.trim()}
-//             >
-//                 {loading ? "Loading..." : "SUBMIT"}
-//             </button>
-//         </form>
-//             <div>
-//                 <h2 className="text-light">ROLL NUMBER</h2>
-//                 <h3 className="text-center">⮟</h3>
-//                 <h2 id="Number">{state.rollNumber}</h2>
-//             </div>
-//     </div>
-//     )
-// }
-// export default CreateStudent;
