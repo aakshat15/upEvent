@@ -140,7 +140,7 @@ function FaSignIn() {
                             variant="body2"
                             color="primary"
                             style={{ cursor: "pointer", textAlign: "right", marginTop: "5px" }}
-                            onClick={() => navigate("/forgot-password")}
+                            onClick={() => navigate("/forgetPassword")}
                         >
                             Forgot Password?
                         </Typography>

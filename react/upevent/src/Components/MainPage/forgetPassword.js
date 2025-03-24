@@ -2,14 +2,22 @@ import React, { useState } from "react";
 import { Container, TextField, Button, Typography, Box, Paper } from "@mui/material";
 import { Send } from "@mui/icons-material";
 import { motion } from "framer-motion";
+import axios from "axios";
 
 const ForgetPassword = () => {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setMessage("If this email is registered, a reset link has been sent.");
+
+
+    try {
+      const response = await axios.post("http://localhost:3000/api/forgot-password", { email });
+      setMessage("If this email is registered, a reset link has been sent.");
+  } catch (err) {
+    setMessage(err.response?.data?.message || "Something went wrong!");
+  }
   };
 
   return (

@@ -172,6 +172,33 @@ export const createStudent = async (req, res, next) => {
                 email,
             });
 
+              // Send email with roll number
+              const mailOptions = {
+                from: process.env.EMAIL,
+                to: email,
+                subject: "🎉 Registration Successful | Welcome In upEvent!",
+                html: `
+                    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px; background-color: #f9f9f9;">
+                        <div style="text-align: center; padding-bottom: 10px;">
+                            <h2 style="color: #2c3e50;">🎓 Student Registration Successful</h2>
+                        </div>
+                        <div style="background: #ffffff; padding: 20px; border-radius: 6px;">
+                            <p style="font-size: 16px; color: #555;">Dear Student,</p>
+                            <p style="font-size: 16px; color: #555;">
+                                Congratulations! You have been successfully registered in our system. Here are your details:
+                            </p>
+                            <div style="background: #f1f1f1; padding: 10px; border-radius: 4px; margin: 15px 0;">
+                                <p style="margin: 5px 0; font-size: 16px; color: #333;"><strong>🎟 Roll Number:</strong> ${rollNumber}</p>
+                            </div>
+                            <p style="font-size: 16px; color: #555;">Best Regards,</p>
+                            <p style="font-size: 16px; color: #333; font-weight: bold;">upEvent Team</p>
+                        </div>
+                    </div>
+                `,
+            };
+            
+        await transport.sendMail(mailOptions);
+
             return res.status(200).json({
                 message: `STUDENT REGISTERD`,
                 rollNumber: rollNumber,
