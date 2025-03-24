@@ -1,5 +1,5 @@
 import express from "express";
-import { createFaculty, facultySignInn, dashBoard, createStudent, createEvent, myEvents, allEvents, getDetails  } from "../controller/faculty.controller.js";
+import { createFaculty, facultySignInn, dashBoard, createStudent, createEvent, myEvents, allEvents, getDetails , eventUpdate } from "../controller/faculty.controller.js";
 import { verifyToken } from "../Middleware/auth.middleware.js";
 import { body } from "express-validator";
 import upload from "../Middleware/upLoad.middleware.js";
@@ -10,7 +10,6 @@ facultyRouter.post("/faculty-signUp",
     body("email", "valid Email Enter").isEmail(),  //IS EMAIL OR NOT
     body("email", "please enter Email").notEmpty(), // EMAIL EMPTY CHECK
     body("password", "Please enter password").notEmpty(),   //PASSWORD EMPTY CHECK
-    body("password", " min:2 or max : 10 char in password").isLength({ min: 1, max: 10 }), //LENGTH OF PASSWORD
     body("name", "Please Enter name").notEmpty(),
     body("facultyNumber", "Please Enter FacultyNumber").notEmpty(),
     createFaculty);
@@ -40,7 +39,7 @@ facultyRouter.post("/createEvent",
     // body("endDate" , "PLEASE ENTER ENDDATE").notEmpty()
      upload.single('image') , createEvent     
       );
-
+facultyRouter.put('/updateEvent/:id' , eventUpdate);
 
 //EVENTS
 facultyRouter.get("/myEvents", verifyToken, myEvents)

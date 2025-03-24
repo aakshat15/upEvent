@@ -286,6 +286,21 @@ export const createEvent = async (req, res, next) => {
 
 }
 
+export const eventUpdate = async (req , res , next) => {
+    try {
+        const { id } = req.params;
+        const { title, endDate, imagePath } = req.body;
+
+        await event.update(
+            { title, endDate, imagePath }, // Fields to update
+            { where: { id } } // Condition to find the record
+          );
+          
+        res.json({ message: "Event updated successfully" });
+    } catch (error) {
+        res.status(500).json({ error: "Failed to update event" });
+    }
+}
 export const myEvents = async (req, res, next) => {
 
     try {

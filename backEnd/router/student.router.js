@@ -11,7 +11,6 @@ studentRouter.post("/student-signUp" ,
         body("email", "valid Email Enter").isEmail(),  //IS EMAIL OR NOT
         body("email", "please enter Email").notEmpty(), // EMAIL EMPTY CHECK
         body("password", "Please enter password").notEmpty(),   //PASSWORD EMPTY CHECK
-        body("password", " min:2 or max : 30 char in password").isLength({ min: 2, max: 30 }), //LENGTH OF PASSWORD
         body("name", "Please Enter name").notEmpty()
     , signUp);
 
