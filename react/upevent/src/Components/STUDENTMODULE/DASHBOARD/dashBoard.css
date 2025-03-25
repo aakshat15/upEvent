@@ -49,6 +49,7 @@
 
 /* Navbar Links */
 .navbar-nav .nav-link {
+  margin: 2px;
   font-size: 16px;
   font-weight: 600;
   color: #112D4E;
@@ -60,9 +61,9 @@
 
 /* Active or Selected Link */
 .navbar-nav .nav-link.selected {
-  background:  #3F72AF;
+  background:  #6caeff;
   color: #ffffff;
-  border: 2px solid #007bff; /* Adds blue border to selected tab */
+  border: 2px solid #4aa2ff; /* Adds blue border to selected tab */
   outline: none;
 }
 

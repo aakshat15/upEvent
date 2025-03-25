@@ -84,7 +84,7 @@ function FaSignIn() {
             dispatch(loginSuccess({ token: data.token, user: data.user }));
             toast.success("Google Sign-In Successful!");
 
-            setTimeout(() => navigate("/student-DashBoard"), 2000);
+            setTimeout(() => navigate("/faculty-DashBoard"), 2000);
         } catch (error) {
             toast.error(error.response?.data?.message || "Google Sign-In failed. Please try manually.");
         }

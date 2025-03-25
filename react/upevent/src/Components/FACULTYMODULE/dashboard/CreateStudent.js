@@ -10,21 +10,21 @@ export default function GenerateRollNumber() {
 
 
     // Verify email using MailboxLayer API
-    // const verifyEmailAPI = async (email) => {
-    //     const apiKey = '895bb6c46fb2542fa91908971e52b3c8'; // Replace with your API key
-    //     const url = `http://apilayer.net/api/check?access_key=${apiKey}&email=${email}`;
+    const verifyEmailAPI = async (email) => {
+        const apiKey = '895bb6c46fb2542fa91908971e52b3c8'; //API key
+        const url = `http://apilayer.net/api/check?access_key=${apiKey}&email=${email}`;
 
-    //     try {
-    //         const response = await axios.get(url);
-    //         console.log("MailboxLayer Response:", response.data);
+        try {
+            const response = await axios.get(url);
+            console.log("MailboxLayer Response:", response.data);
             
-    //         // Check if email is valid and not disposable
-    //         return response.data.format_valid && response.data.smtp_check && !response.data.disposable;
-    //     } catch (error) {
-    //         console.error("Error verifying email:", error);
-    //         return false;
-    //     }
-    // };
+            // Check if email is valid and not disposable
+            return response.data.format_valid && response.data.smtp_check && !response.data.disposable;
+        } catch (error) {
+            console.error("Error verifying email:", error);
+            return false;
+        }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -33,12 +33,12 @@ export default function GenerateRollNumber() {
         setLoading(true);
 
         // Verify email using MailboxLayer
-        // const isVerified = await verifyEmailAPI(email);
-        // if (!isVerified) {
-        //     toast.error("Invalid or non-existent email!");
-        //     setLoading(false);
-        //     return;
-        // }
+        const isVerified = await verifyEmailAPI(email);
+        if (!isVerified) {
+            toast.error("Invalid or non-existent email!");
+            setLoading(false);
+            return;
+        }
 
         // Proceed with API call if email is verified
         try {

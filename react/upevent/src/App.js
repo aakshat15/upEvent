@@ -13,6 +13,7 @@ import StudentDashBoard from "./Components/STUDENTMODULE/DASHBOARD/StudentDashBo
 import EventForm from "./Components/STUDENTMODULE/DASHBOARD/EventForm.js";
 import ForgetPassword from "./Components/MainPage/forgetPassword.js";
 import ResetPassword from "./Components/MainPage/RestPassord.js";
+import EditEvent from "./Components/FACULTYMODULE/dashboard/EditEvent.js";
 function App() {
   return <>
     <Routes>
@@ -28,7 +29,7 @@ function App() {
         <Route path="/faculty-createEvent" element={<CreateEvent />} />
         <Route path="/faculty-createStudent" element={<CreateStudent/>}/>
         <Route path="/faculty-getDetalis/:id" element={<GetDetalis/>}/>
-        
+        <Route path="/faculty/edit-event/:id" element={<EditEvent />} />
 
        <Route path="/student-DashBoard" element={<StudentDashBoard/>}/>
        <Route path="/student-EventForm/:id" element={<EventForm/>}/>

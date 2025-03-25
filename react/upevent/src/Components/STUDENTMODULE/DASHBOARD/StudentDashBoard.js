@@ -57,9 +57,9 @@ function StudentDashBoard() {
         <div className="studentDashboard">
             <div className="containt">
                 <nav className="navbar navbar-expand-lg" id="navbar">
-                    <a className="navbar-brand" id="nav" href="#">
-                        <img src={logo} alt="Logo" />
-                        <span>Bootstrap</span>
+                    <a className="navbar-brand" id="nav">
+                        <img src={logo} alt="Logo" />   
+                        <span>UpEvent</span>
                     </a>
 
                     {/* Burger Button for Mobile */}

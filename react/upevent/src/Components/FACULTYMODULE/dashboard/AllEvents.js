@@ -1,6 +1,7 @@
 import axios from "axios";
-import { useEffect, useReducer } from "react";
+import { useEffect, useReducer, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
+import _ from "lodash"; // Import lodash for debounce
 
 function AllEvents() {
     const navigate = useNavigate();
@@ -12,19 +13,51 @@ function AllEvents() {
                 const currentTime = Date.now();
                 return {
                     ...state,
+                    allEvents: action.payload,
                     upcomingEvents: action.payload.filter(event => new Date(event.endDate).getTime() >= currentTime),
                     endedEvents: action.payload.filter(event => new Date(event.endDate).getTime() < currentTime),
+                };
+            case "setFilteredEvents":
+                return {
+                    ...state,
+                    upcomingEvents: action.payload.filter(event => new Date(event.endDate).getTime() >= Date.now()),
+                    endedEvents: action.payload.filter(event => new Date(event.endDate).getTime() < Date.now()),
                 };
             default:
                 return state;
         }
     };
 
-    // state
+    // State
     const [state, dispatch] = useReducer(reducer, {
+        allEvents: [],
         upcomingEvents: [],
         endedEvents: [],
     });
+
+    const [searchQuery, setSearchQuery] = useState("");
+
+    // Debounced search function
+    const debouncedSearch = useCallback(
+        _.debounce((query) => {
+            if (query.trim() === "") {
+                dispatch({ type: "setFilteredEvents", payload: state.allEvents });
+            } else {
+                const filteredEvents = state.allEvents.filter((event) =>
+                    event.title.toLowerCase().includes(query.toLowerCase())
+                );
+                dispatch({ type: "setFilteredEvents", payload: filteredEvents });
+            }
+        }, 500), // 500ms delay
+        [state.allEvents]
+    );
+
+    // Handle search input change
+    const handleSearchChange = (event) => {
+        const query = event.target.value;
+        setSearchQuery(query);
+        debouncedSearch(query);
+    };
 
     // Fetch events
     useEffect(() => {
@@ -50,7 +83,16 @@ function AllEvents() {
         <>
             <h1 className="heading">FACULTY DASHBOARD</h1>
             <div className="data-container">
-                <input type="text" className="form-control" id="search" placeholder="Search" />      
+                {/* Search Bar */}
+                <input 
+                    type="text" 
+                    className="form-control" 
+                    id="search" 
+                    placeholder="Search events..." 
+                    value={searchQuery} 
+                    onChange={handleSearchChange} 
+                />
+
                 {/* Upcoming Events */}
                 <div className="upComingcontainer">
                     <h3 className="midHeading text-center">UPCOMING EVENTS</h3>
@@ -71,7 +113,7 @@ function AllEvents() {
                                 </div>
                             ))
                         ) : (
-                            <h2 className="ml-5 text-center text-muted ">No Upcoming Events Available</h2>
+                            <h2 className="ml-5 text-center text-muted">No Upcoming Events Available</h2>
                         )}
                     </div>
                 </div>

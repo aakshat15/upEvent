@@ -74,10 +74,10 @@ function SignUp() {
 
     const handleGoogleSuccess = async (response) => {
         const decoded = jwtDecode(response.credential);
-        setFormData({ 
-            name: decoded.name, 
-            email: decoded.email, 
-            rollNumber: "", 
+        setFormData({
+            name: decoded.name,
+            email: decoded.email,
+            rollNumber: "",
             password: decoded.sub // Using Google's unique 'sub' as password
         });
         setIsGoogleUser(true);
@@ -93,68 +93,70 @@ function SignUp() {
                         <h6 className="text-center" style={{ color: "#3F72AF" }}>Please Enter your Details</h6>
 
                         <div className="form-group mt-3">
-                        <TextField 
-                        label="Name" 
-                        fullWidth variant="outlined" 
-                        value={formData.name} 
-                        onChange={(e) => handleInputChange("name", e.target.value)} 
-                        error={!!errors.name} 
-                        helperText={errors.name} 
-                        />
+                            <TextField
+                                label="Name"
+                                fullWidth variant="outlined"
+                                value={formData.name}
+                                onChange={(e) => handleInputChange("name", e.target.value)}
+                                error={!!errors.name}
+                                helperText={errors.name}
+                            />
                         </div>
 
                         <div className="form-group mt-2">
-                        <TextField label="Email" 
-                        fullWidth variant="outlined" 
-                        value={formData.email} 
-                        onChange={(e) => handleInputChange("email", e.target.value)}
-                         error={!!errors.email} 
-                         helperText={errors.email} 
-                        />
+                            <TextField label="Email"
+                                fullWidth variant="outlined"
+                                value={formData.email}
+                                onChange={(e) => handleInputChange("email", e.target.value)}
+                                error={!!errors.email}
+                                helperText={errors.email}
+                            />
                         </div>
 
                         <div className="form-group mt-2">
-                        <TextField 
-                        label="Roll Number" 
-                        fullWidth variant="outlined"
-                        value={formData.rollNumber}
-                         onChange={(e) => handleInputChange("rollNumber", e.target.value)} 
-                         error={!!errors.rollNumber} 
-                         helperText={errors.rollNumber} 
-                         />
+                            <TextField
+                                label="Roll Number"
+                                fullWidth variant="outlined"
+                                value={formData.rollNumber}
+                                onChange={(e) => handleInputChange("rollNumber", e.target.value)}
+                                error={!!errors.rollNumber}
+                                helperText={errors.rollNumber}
+                            />
                         </div>
-                        
+
                         {!isGoogleUser && (
-                        <div className="form-group mt-2">
-                            <TextField 
-                            label="Password" 
-                            type={showPassword ? "text" : "password"} 
-                            fullWidth 
-                            variant="outlined" 
-                            value={formData.password} 
-                            onChange={(e) => handleInputChange("password", e.target.value)} 
-                            error={!!errors.password} 
-                            helperText={errors.password} 
-                             InputProps={{
-                                endAdornment: (
-                                    <InputAdornment position="end">
-                                        <IconButton onClick={togglePasswordVisibility} edge="end">
-                                            {showPassword ? <VisibilityOff /> : <Visibility />}
-                                        </IconButton>
-                                    </InputAdornment>
-                                ),
-                            }} />
-                        </div>
+                            <div className="form-group mt-2">
+                                <TextField
+                                    label="Password"
+                                    type={showPassword ? "text" : "password"}
+                                    fullWidth
+                                    variant="outlined"
+                                    value={formData.password}
+                                    onChange={(e) => handleInputChange("password", e.target.value)}
+                                    error={!!errors.password}
+                                    helperText={errors.password}
+                                    InputProps={{
+                                        endAdornment: (
+                                            <InputAdornment position="end">
+                                                <IconButton onClick={togglePasswordVisibility} edge="end">
+                                                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                                                </IconButton>
+                                            </InputAdornment>
+                                        ),
+                                    }} />
+                            </div>
                         )}
-                        <Button 
-                        type="submit" 
-                        variant="contained" 
-                        color="primary" 
-                        fullWidth disabled={loading} 
-                        className="mt-3">
 
-                            {loading ? <CircularProgress size={24} /> : "Sign Up"}
-                        </Button>
+                        <div className="mt-4 text-center">
+                            <Button
+                                type="submit"
+                                variant="contained"
+                                color="primary"
+                                fullWidth disabled={loading}
+                            >
+                                {loading ? <CircularProgress size={24} /> : "Sign Up"}
+                            </Button>
+                        </div>
 
                         {/* Google Sign-Up Button */}
                         <div className="mt-4 text-center">
